@@ -1,0 +1,535 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>공개 소스 — FRAME LAB</title><link rel="stylesheet" href="docs.css"></head><body><nav><a href="index.html">← 편집기로</a><a href="guide.html">사용 안내와 검사 기록</a><a href="https://github.com/H0P2/frame-lab-card-studio">GitHub 저장소</a></nav><p class="tag">FRAME LAB / SOURCE</p><h1>공개 소스</h1><p>로그인 없이 코드를 읽거나 전체 파일을 내려받을 수 있습니다. 편집기 소스, 실제 검사 기록, 완성 이미지, 재검사 도구를 포함합니다.</p><p><a href="source.zip" download>전체 소스 ZIP 내려받기</a> · <a href="evidence/source-manifest.json">파일 해시 목록</a></p><h2>편집기 코드</h2><details><summary>index.html</summary><pre><code>&lt;!doctype html&gt;&lt;html lang=&quot;ko&quot;&gt;&lt;head&gt;&lt;meta charset=&quot;utf-8&quot;&gt;&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width,initial-scale=1&quot;&gt;&lt;title&gt;FRAME LAB — 짤·카드 스튜디오&lt;/title&gt;&lt;meta name=&quot;description&quot; content=&quot;이미지와 문구를 편집하고 PNG로 저장하는 짤·카드 스튜디오&quot;&gt;&lt;link rel=&quot;icon&quot; type=&quot;image/svg+xml&quot; href=&quot;data:image/svg+xml,%3Csvg xmlns=&#x27;http://www.w3.org/2000/svg&#x27; viewBox=&#x27;0 0 32 32&#x27;%3E%3Crect width=&#x27;32&#x27; height=&#x27;32&#x27; rx=&#x27;8&#x27; fill=&#x27;%2315161b&#x27;/%3E%3Cpath d=&#x27;M8 24V8h16M8 16h12&#x27; stroke=&#x27;%23c9f36c&#x27; stroke-width=&#x27;4&#x27; fill=&#x27;none&#x27;/%3E%3C/svg%3E&quot;&gt;&lt;link rel=&quot;stylesheet&quot; href=&quot;style.css?v=4&quot;&gt;&lt;/head&gt;&lt;body&gt;
+&lt;header class=&quot;topbar&quot;&gt;&lt;a class=&quot;brand&quot; href=&quot;index.html&quot;&gt;&lt;span class=&quot;mark&quot;&gt;F&lt;/span&gt; FRAME &lt;b&gt;LAB&lt;/b&gt;&lt;/a&gt;&lt;span class=&quot;top-label&quot;&gt;짤·카드 스튜디오&lt;/span&gt;&lt;span id=&quot;draftStatus&quot; class=&quot;draft-status&quot; role=&quot;status&quot;&gt;작업 준비 중&lt;/span&gt;&lt;div class=&quot;history-tools&quot;&gt;&lt;button id=&quot;undo&quot; disabled aria-label=&quot;실행 취소&quot; title=&quot;Ctrl / ⌘ + Z&quot;&gt;취소&lt;/button&gt;&lt;button id=&quot;redo&quot; disabled aria-label=&quot;다시 실행&quot; title=&quot;Ctrl / ⌘ + Shift + Z&quot;&gt;다시&lt;/button&gt;&lt;button id=&quot;newCard&quot;&gt;새 카드&lt;/button&gt;&lt;/div&gt;&lt;button id=&quot;download&quot; class=&quot;primary&quot;&gt;PNG 내려받기&lt;/button&gt;&lt;/header&gt;
+&lt;main class=&quot;workspace&quot;&gt;&lt;aside class=&quot;panel controls&quot;&gt;&lt;div class=&quot;section-title&quot;&gt;&lt;span&gt;01&lt;/span&gt;&lt;h1&gt;카드 편집&lt;/h1&gt;&lt;/div&gt;&lt;section&gt;&lt;h2&gt;이미지&lt;/h2&gt;&lt;label class=&quot;upload-zone&quot; for=&quot;imageFile&quot;&gt;&lt;span class=&quot;upload-icon&quot;&gt;＋&lt;/span&gt;&lt;strong&gt;이미지 불러오기&lt;/strong&gt;&lt;span&gt;PNG · JPEG / 최대 8MB&lt;/span&gt;&lt;/label&gt;&lt;input id=&quot;imageFile&quot; type=&quot;file&quot; accept=&quot;image/png,image/jpeg&quot; class=&quot;file-input&quot;&gt;&lt;div class=&quot;inline&quot;&gt;&lt;button id=&quot;sample&quot;&gt;샘플 이미지&lt;/button&gt;&lt;button id=&quot;removeImage&quot;&gt;이미지 제거&lt;/button&gt;&lt;/div&gt;&lt;p id=&quot;imageInfo&quot; class=&quot;muted&quot;&gt;추상 그래픽 · 프로젝트 내 제작&lt;/p&gt;&lt;label for=&quot;fit&quot;&gt;이미지 배치&lt;/label&gt;&lt;select id=&quot;fit&quot;&gt;&lt;option value=&quot;cover&quot;&gt;채우기 · 가장자리 잘림&lt;/option&gt;&lt;option value=&quot;contain&quot;&gt;맞추기 · 전체 이미지&lt;/option&gt;&lt;/select&gt;&lt;label for=&quot;background&quot;&gt;배경 색&lt;/label&gt;&lt;input id=&quot;background&quot; type=&quot;color&quot; value=&quot;#171922&quot;&gt;&lt;/section&gt;&lt;section&gt;&lt;h2&gt;문구&lt;/h2&gt;&lt;label for=&quot;text&quot;&gt;카드에 쓸 문구&lt;/label&gt;&lt;textarea id=&quot;text&quot; rows=&quot;3&quot; maxlength=&quot;2000&quot;&gt;&lt;/textarea&gt;&lt;div class=&quot;inline&quot;&gt;&lt;label for=&quot;fontSize&quot;&gt;크기 &lt;output id=&quot;sizeValue&quot;&gt;76&lt;/output&gt;&lt;/label&gt;&lt;input id=&quot;textColor&quot; type=&quot;color&quot; aria-label=&quot;문구 색&quot; value=&quot;#ffffff&quot;&gt;&lt;/div&gt;&lt;input id=&quot;fontSize&quot; type=&quot;range&quot; min=&quot;20&quot; max=&quot;160&quot; value=&quot;76&quot;&gt;&lt;label for=&quot;position&quot;&gt;문구 위치&lt;/label&gt;&lt;select id=&quot;position&quot;&gt;&lt;option value=&quot;bottom&quot;&gt;아래&lt;/option&gt;&lt;option value=&quot;center&quot;&gt;가운데&lt;/option&gt;&lt;option value=&quot;top&quot;&gt;위&lt;/option&gt;&lt;/select&gt;&lt;label for=&quot;align&quot;&gt;정렬&lt;/label&gt;&lt;select id=&quot;align&quot;&gt;&lt;option value=&quot;left&quot;&gt;왼쪽&lt;/option&gt;&lt;option value=&quot;center&quot;&gt;가운데&lt;/option&gt;&lt;option value=&quot;right&quot;&gt;오른쪽&lt;/option&gt;&lt;/select&gt;&lt;label class=&quot;check&quot;&gt;&lt;input id=&quot;scrim&quot; type=&quot;checkbox&quot; checked&gt; 문구 뒤 배경 보정&lt;/label&gt;&lt;/section&gt;&lt;/aside&gt;
+&lt;section class=&quot;stage&quot;&gt;&lt;div class=&quot;stage-toolbar&quot;&gt;&lt;div&gt;&lt;span class=&quot;eyebrow&quot;&gt;LIVE CANVAS&lt;/span&gt;&lt;h2&gt;미리보기&lt;/h2&gt;&lt;/div&gt;&lt;div class=&quot;ratios&quot; role=&quot;group&quot; aria-label=&quot;화면비&quot;&gt;&lt;button data-ratio=&quot;1:1&quot; aria-pressed=&quot;true&quot;&gt;1:1&lt;/button&gt;&lt;button data-ratio=&quot;4:5&quot; aria-pressed=&quot;false&quot;&gt;4:5&lt;/button&gt;&lt;button data-ratio=&quot;9:16&quot; aria-pressed=&quot;false&quot;&gt;9:16&lt;/button&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;canvas-wrap&quot; id=&quot;canvasWrap&quot;&gt;&lt;canvas id=&quot;preview&quot; width=&quot;1080&quot; height=&quot;1080&quot; aria-label=&quot;카드 미리보기&quot;&gt;&lt;/canvas&gt;&lt;div id=&quot;textSelection&quot; tabindex=&quot;0&quot; role=&quot;button&quot; aria-label=&quot;문구 위치 조정. 마우스로 끌거나 방향키로 이동, Shift 방향키로 크게 이동&quot; aria-describedby=&quot;moveHint&quot;&gt;&lt;span class=&quot;selection-handle&quot;&gt;&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;stage-tools&quot;&gt;&lt;span id=&quot;moveHint&quot;&gt;문구를 끌어 이동 · 방향키로 미세 조정&lt;/span&gt;&lt;button id=&quot;focusMode&quot; aria-pressed=&quot;false&quot;&gt;집중 모드&lt;/button&gt;&lt;/div&gt;&lt;div class=&quot;canvas-meta&quot;&gt;&lt;span id=&quot;dimensions&quot;&gt;1080 × 1080 px&lt;/span&gt;&lt;span id=&quot;layoutInfo&quot;&gt;PNG · 미리보기 그대로 저장&lt;/span&gt;&lt;/div&gt;&lt;section class=&quot;effects-panel&quot; aria-labelledby=&quot;effectsTitle&quot;&gt;&lt;div class=&quot;effects-heading&quot;&gt;&lt;div&gt;&lt;span class=&quot;eyebrow&quot;&gt;MOTION STUDIO&lt;/span&gt;&lt;h3 id=&quot;effectsTitle&quot;&gt;카드에 움직임을&lt;/h3&gt;&lt;/div&gt;&lt;button id=&quot;playMotion&quot; aria-label=&quot;효과 미리보기 재생&quot;&gt;재생&lt;/button&gt;&lt;/div&gt;&lt;div class=&quot;effect-choices&quot; role=&quot;group&quot; aria-label=&quot;움직임 효과&quot;&gt;&lt;button data-effect=&quot;none&quot; aria-pressed=&quot;true&quot;&gt;정지&lt;/button&gt;&lt;button data-effect=&quot;fade&quot; aria-pressed=&quot;false&quot;&gt;페이드&lt;/button&gt;&lt;button data-effect=&quot;slide&quot; aria-pressed=&quot;false&quot;&gt;슬라이드&lt;/button&gt;&lt;button data-effect=&quot;typewriter&quot; aria-pressed=&quot;false&quot;&gt;타이핑&lt;/button&gt;&lt;button data-effect=&quot;zoom&quot; aria-pressed=&quot;false&quot;&gt;줌&lt;/button&gt;&lt;/div&gt;&lt;div class=&quot;motion-footer&quot;&gt;&lt;label class=&quot;check&quot;&gt;&lt;input id=&quot;reduceMotion&quot; type=&quot;checkbox&quot;&gt; 움직임 줄이기&lt;/label&gt;&lt;button id=&quot;downloadVideo&quot;&gt;3초 영상 저장 · WebM&lt;/button&gt;&lt;/div&gt;&lt;p id=&quot;motionInfo&quot; class=&quot;muted&quot;&gt;PNG는 효과가 끝난 완성 장면을 저장합니다.&lt;/p&gt;&lt;/section&gt;&lt;div id=&quot;notice&quot; role=&quot;status&quot; aria-live=&quot;polite&quot;&gt;이미지와 문구를 바꾸면 바로 반영됩니다.&lt;/div&gt;&lt;/section&gt;
+&lt;aside class=&quot;panel templates&quot;&gt;&lt;div class=&quot;section-title&quot;&gt;&lt;span&gt;02&lt;/span&gt;&lt;h2&gt;내 템플릿&lt;/h2&gt;&lt;/div&gt;&lt;section class=&quot;preset-section&quot; aria-labelledby=&quot;presetTitle&quot;&gt;&lt;span class=&quot;eyebrow&quot;&gt;DESIGN COLLECTION&lt;/span&gt;&lt;h3 id=&quot;presetTitle&quot;&gt;한 번에 분위기 바꾸기&lt;/h3&gt;&lt;div class=&quot;preset-grid&quot;&gt;&lt;button data-preset=&quot;neon&quot;&gt;&lt;span class=&quot;preset-art neon&quot;&gt;&lt;/span&gt;&lt;strong&gt;네온&lt;/strong&gt;&lt;small&gt;선명한 빛&lt;/small&gt;&lt;/button&gt;&lt;button data-preset=&quot;film&quot;&gt;&lt;span class=&quot;preset-art film&quot;&gt;&lt;/span&gt;&lt;strong&gt;필름&lt;/strong&gt;&lt;small&gt;따뜻한 기록&lt;/small&gt;&lt;/button&gt;&lt;button data-preset=&quot;mono&quot;&gt;&lt;span class=&quot;preset-art mono&quot;&gt;&lt;/span&gt;&lt;strong&gt;미니멀&lt;/strong&gt;&lt;small&gt;차분한 흑백&lt;/small&gt;&lt;/button&gt;&lt;button data-preset=&quot;editorial&quot;&gt;&lt;span class=&quot;preset-art editorial&quot;&gt;&lt;/span&gt;&lt;strong&gt;매거진&lt;/strong&gt;&lt;small&gt;정돈된 한 장&lt;/small&gt;&lt;/button&gt;&lt;/div&gt;&lt;button id=&quot;resetStyle&quot;&gt;원본 스타일로&lt;/button&gt;&lt;/section&gt;&lt;p class=&quot;muted&quot;&gt;이미지·편집 설정·효과를 함께 저장합니다.&lt;/p&gt;&lt;label for=&quot;templateName&quot;&gt;템플릿 이름&lt;/label&gt;&lt;input id=&quot;templateName&quot; type=&quot;text&quot; maxlength=&quot;40&quot; placeholder=&quot;예: 오늘의 한 문장&quot;&gt;&lt;div class=&quot;inline&quot;&gt;&lt;button id=&quot;createTemplate&quot; class=&quot;primary&quot;&gt;새로 저장&lt;/button&gt;&lt;button id=&quot;updateTemplate&quot; disabled&gt;선택 항목 수정&lt;/button&gt;&lt;/div&gt;&lt;button id=&quot;retryStorage&quot; hidden&gt;저장소 다시 연결&lt;/button&gt;&lt;button id=&quot;undoDelete&quot; hidden&gt;최근 삭제 취소&lt;/button&gt;&lt;div id=&quot;templateList&quot; class=&quot;template-list&quot;&gt;&lt;p class=&quot;empty&quot;&gt;첫 템플릿을 저장해 보세요.&lt;/p&gt;&lt;/div&gt;&lt;div class=&quot;transfer&quot;&gt;&lt;h3&gt;옮겨 쓰기&lt;/h3&gt;&lt;button id=&quot;exportJSON&quot;&gt;템플릿 JSON 내보내기&lt;/button&gt;&lt;label class=&quot;file-button&quot; for=&quot;jsonFile&quot;&gt;템플릿 JSON 가져오기&lt;/label&gt;&lt;input id=&quot;jsonFile&quot; type=&quot;file&quot; accept=&quot;application/json,.json&quot; class=&quot;file-input&quot;&gt;&lt;p class=&quot;muted&quot;&gt;템플릿과 작성 중인 카드는 이 브라우저에 보관됩니다. 다른 기기에서는 템플릿 JSON으로 복원하세요.&lt;/p&gt;&lt;/div&gt;&lt;a class=&quot;subtle-link&quot; href=&quot;guide.html&quot;&gt;사용 안내와 검사 기록&lt;/a&gt;&lt;/aside&gt;&lt;/main&gt;&lt;script type=&quot;module&quot; src=&quot;app.js?v=4&quot;&gt;&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;
+</code></pre></details><details><summary>app.js</summary><pre><code>const $=id=&gt;document.getElementById(id),SIZES={&#x27;1:1&#x27;:[1080,1080],&#x27;4:5&#x27;:[1080,1350],&#x27;9:16&#x27;:[1080,1920]};
+const DEFAULT={ratio:&#x27;1:1&#x27;,text:&#x27;오늘의 작은 발견\n내일의 새로운 시작&#x27;,fontSize:76,color:&#x27;#ffffff&#x27;,position:&#x27;bottom&#x27;,align:&#x27;left&#x27;,fit:&#x27;cover&#x27;,background:&#x27;#171922&#x27;,scrim:true,image:null,offsetX:0,offsetY:0,style:&#x27;original&#x27;,effect:&#x27;none&#x27;};
+const FONT=&#x27;&quot;Malgun Gothic&quot;,&quot;Apple SD Gothic Neo&quot;,&quot;Segoe UI&quot;,&quot;Segoe UI Emoji&quot;,&quot;Apple Color Emoji&quot;,sans-serif&#x27;;
+const LAB=[&#x27;localhost&#x27;,&#x27;127.0.0.1&#x27;].includes(location.hostname)&amp;&amp;new URLSearchParams(location.search).has(&#x27;lab&#x27;),DBNAME=LAB?&#x27;frame-lab-test-v2&#x27;:&#x27;frame-lab-v1&#x27;;
+const MAX_FILE=8*1024*1024,MAX_PIXELS=20000000,MAX_JSON=32*1024*1024,MAX_TEMPLATES=24;
+let state={...DEFAULT},image=null,layout=null,templates=[],selected=null,db=null,draftDB=null,busy=false,readSequence=0,actionQueue=Promise.resolve();
+const segmenter=typeof Intl.Segmenter===&#x27;function&#x27;?new Intl.Segmenter(&#x27;ko&#x27;,{granularity:&#x27;grapheme&#x27;}):null;
+const graphemes=s=&gt;segmenter?[...segmenter.segment(s)].map(x=&gt;x.segment):Array.from(s);
+function notify(msg,error=false){$(&#x27;notice&#x27;).textContent=msg;$(&#x27;notice&#x27;).dataset.error=String(error)}
+function sampleImage(variant=0){const c=document.createElement(&#x27;canvas&#x27;);c.width=1200;c.height=1500;const x=c.getContext(&#x27;2d&#x27;),colors=[[&#x27;#5377d8&#x27;,&#x27;#7861a4&#x27;,&#x27;#de754a&#x27;],[&#x27;#1a6160&#x27;,&#x27;#397f6a&#x27;,&#x27;#c9d475&#x27;],[&#x27;#513783&#x27;,&#x27;#b94577&#x27;,&#x27;#eda064&#x27;]][variant%3],g=x.createLinearGradient(0,0,1200,1500);colors.forEach((v,i)=&gt;g.addColorStop(i/2,v));x.fillStyle=g;x.fillRect(0,0,c.width,c.height);x.strokeStyle=&#x27;#ffffff33&#x27;;x.lineWidth=2;for(let i=0;i&lt;8;i++){x.beginPath();x.ellipse(610,700,180+i*70,260+i*50,.5,0,Math.PI*2);x.stroke()}return c.toDataURL(&#x27;image/png&#x27;)}
+async function decode(src){const i=new Image();i.src=src;try{await i.decode()}catch{throw Error(&#x27;이미지 데이터가 손상됐거나 읽을 수 없습니다. 기존 작업은 유지됩니다.&#x27;)}return i}
+function validateState(s){if(!s||typeof s!==&#x27;object&#x27;||Array.isArray(s))throw Error(&#x27;편집 설정이 올바르지 않습니다.&#x27;);const optional=[&#x27;offsetX&#x27;,&#x27;offsetY&#x27;,&#x27;style&#x27;,&#x27;effect&#x27;],keys=Object.keys(DEFAULT);if(keys.filter(k=&gt;!optional.includes(k)).some(k=&gt;!Object.hasOwn(s,k)))throw Error(&#x27;필수 편집 항목이 빠졌습니다.&#x27;);s={...DEFAULT,...s};if(!Object.hasOwn(SIZES,s.ratio)||typeof s.text!==&#x27;string&#x27;||s.text.length&gt;2000||!Number.isFinite(s.fontSize)||s.fontSize&lt;20||s.fontSize&gt;160||!/^#[0-9a-f]{6}$/i.test(s.color)||!/^#[0-9a-f]{6}$/i.test(s.background)||![&#x27;top&#x27;,&#x27;center&#x27;,&#x27;bottom&#x27;].includes(s.position)||![&#x27;left&#x27;,&#x27;center&#x27;,&#x27;right&#x27;].includes(s.align)||![&#x27;cover&#x27;,&#x27;contain&#x27;].includes(s.fit)||typeof s.scrim!==&#x27;boolean&#x27;||!(s.image===null||typeof s.image===&#x27;string&#x27;)||!Number.isFinite(s.offsetX)||Math.abs(s.offsetX)&gt;1||!Number.isFinite(s.offsetY)||Math.abs(s.offsetY)&gt;1||![&#x27;original&#x27;,&#x27;neon&#x27;,&#x27;film&#x27;,&#x27;mono&#x27;,&#x27;editorial&#x27;].includes(s.style)||![&#x27;none&#x27;,&#x27;fade&#x27;,&#x27;slide&#x27;,&#x27;typewriter&#x27;,&#x27;zoom&#x27;].includes(s.effect))throw Error(&#x27;편집 값이 허용 범위를 벗어났습니다. 문구는 최대 2,000자입니다.&#x27;);return Object.fromEntries(keys.map(k=&gt;[k,s[k]]))}
+function imageDimensions(b,type){const v=new DataView(b.buffer,b.byteOffset,b.byteLength);if(type===&#x27;image/png&#x27;){if(b.length&lt;24)throw Error(&#x27;PNG 데이터가 너무 짧습니다.&#x27;);return [v.getUint32(16),v.getUint32(20)]}let i=2;while(i+9&lt;b.length){if(b[i]!==255){i++;continue}const m=b[i+1];if(m===216||m===217){i+=2;continue}const len=v.getUint16(i+2);if(len&lt;2)break;if([192,193,194,195,197,198,199,201,202,203,205,206,207].includes(m))return [v.getUint16(i+7),v.getUint16(i+5)];i+=2+len}return null}
+async function normalizeFile(f,{lossless=false}={}){if(f.size&gt;(lossless?MAX_JSON:MAX_FILE))throw Error(&#x27;파일은 최대 8MB까지 지원합니다. 기존 작업은 유지됩니다.&#x27;);const b=new Uint8Array(await f.arrayBuffer()),png=b.length&gt;=8&amp;&amp;[137,80,78,71,13,10,26,10].every((v,i)=&gt;b[i]===v),jpeg=b.length&gt;=3&amp;&amp;b[0]===255&amp;&amp;b[1]===216&amp;&amp;b[2]===255,type=png?&#x27;image/png&#x27;:jpeg?&#x27;image/jpeg&#x27;:null;if(!type||![&#x27;image/png&#x27;,&#x27;image/jpeg&#x27;,&#x27;&#x27;].includes(f.type)||(f.type&amp;&amp;f.type!==type))throw Error(&#x27;실제 PNG·JPEG 이미지 파일만 지원합니다. 기존 작업은 유지됩니다.&#x27;);const dims=imageDimensions(b,type);if(dims&amp;&amp;(!dims[0]||!dims[1]||dims[0]*dims[1]&gt;MAX_PIXELS))throw Error(&#x27;최대 2천만 픽셀의 이미지까지 지원합니다. 기존 작업은 유지됩니다.&#x27;);const url=URL.createObjectURL(new Blob([b],{type}));try{const im=await decode(url);if(im.width*im.height&gt;MAX_PIXELS)throw Error(&#x27;이미지 해상도가 너무 큽니다. 기존 작업은 유지됩니다.&#x27;);const scale=Math.min(1,2400/Math.max(im.width,im.height)),c=document.createElement(&#x27;canvas&#x27;);c.width=Math.max(1,Math.round(im.width*scale));c.height=Math.max(1,Math.round(im.height*scale));c.getContext(&#x27;2d&#x27;).drawImage(im,0,0,c.width,c.height);const src=c.toDataURL(lossless?&#x27;image/png&#x27;:type,type===&#x27;image/jpeg&#x27;?.92:undefined);if(src.length&gt;(lossless?MAX_JSON:MAX_FILE)*4/3+100)throw Error(&#x27;정리한 이미지가 8MB를 넘습니다. 더 작은 이미지로 시도하세요.&#x27;);return {src,width:c.width,height:c.height,originalWidth:im.width,originalHeight:im.height,type}}finally{URL.revokeObjectURL(url)}}
+async function normalizeDataURL(src,{lossless=true}={}){if(!/^data:image\/(png|jpeg);base64,[A-Za-z0-9+/]+=*$/.test(src)||src.length&gt;(lossless?MAX_JSON:MAX_FILE)*4/3+100)throw Error(&#x27;템플릿 이미지 형식이 올바르지 않습니다.&#x27;);let bytes;try{bytes=Uint8Array.from(atob(src.slice(src.indexOf(&#x27;,&#x27;)+1)),c=&gt;c.charCodeAt(0))}catch{throw Error(&#x27;템플릿 이미지 데이터를 읽을 수 없습니다.&#x27;)}return normalizeFile(new File([bytes],&#x27;template-image&#x27;,{type:src.slice(5,src.indexOf(&#x27;;&#x27;))}),{lossless})}
+function wrapText(ctx,text,width){const lines=[];for(const paragraph of text.replace(/\r\n?/g,&#x27;\n&#x27;).split(&#x27;\n&#x27;)){if(!paragraph){lines.push(&#x27;&#x27;);continue}let line=&#x27;&#x27;;for(const cluster of graphemes(paragraph)){if(line&amp;&amp;ctx.measureText(line+cluster).width&gt;width){lines.push(line);line=cluster}else line+=cluster}lines.push(line)}return lines}
+function calculateLayout(s,ctx){const [w,h]=SIZES[s.ratio],pad=72,maxW=w-pad*2,maxH=h-pad*2;let effective=s.fontSize,lines,lh;while(effective&gt;=12){ctx.font=`700 ${effective}px ${FONT}`;lines=wrapText(ctx,s.text,maxW);lh=effective*1.4;if(lines.length*lh&lt;=maxH&amp;&amp;lines.every(l=&gt;ctx.measureText(l).width&lt;=maxW+.01))break;effective--}if(effective&lt;12)throw Error(&#x27;줄바꿈이 너무 많아 카드 안에 표시할 수 없습니다. 줄 수를 줄여 주세요. 기존 문구는 유지됩니다.&#x27;);const total=lines.length*lh,baseY=s.position===&#x27;top&#x27;?pad:s.position===&#x27;center&#x27;?(h-total)/2:h-pad-total,baseBoxes=lines.map((line,i)=&gt;{const width=ctx.measureText(line).width;return {x:s.align===&#x27;left&#x27;?pad:s.align===&#x27;right&#x27;?w-pad-width:(w-width)/2,y:baseY+i*lh,width,height:lh}}),minX=Math.min(...baseBoxes.map(b=&gt;b.x)),maxX=Math.max(...baseBoxes.map(b=&gt;b.x+b.width)),shiftX=Math.max(pad-minX,Math.min(w-pad-maxX,(s.offsetX||0)*w)),y=Math.max(pad,Math.min(h-pad-total,baseY+(s.offsetY||0)*h)),shiftY=y-baseY,boxes=baseBoxes.map(b=&gt;({...b,x:b.x+shiftX,y:b.y+shiftY}));return {width:w,height:h,pad,requested:s.fontSize,effective,lines,lineHeight:lh,y,shiftX,shiftY,boxes,withinBounds:boxes.every(b=&gt;b.x&gt;=pad-.1&amp;&amp;b.x+b.width&lt;=w-pad+.1&amp;&amp;b.y&gt;=pad-.1&amp;&amp;b.y+b.height&lt;=h-pad+.1)}}
+function draw(s,im,canvas,animation=null){const [w,h]=SIZES[s.ratio];if(canvas.width!==w)canvas.width=w;if(canvas.height!==h)canvas.height=h;const ctx=canvas.getContext(&#x27;2d&#x27;),l=calculateLayout(s,ctx);ctx.clearRect(0,0,w,h);ctx.fillStyle=s.background;ctx.fillRect(0,0,w,h);let crop=null;const p=animation?.progress??1,ease=1-Math.pow(1-p,3);if(im){const scale=(s.fit===&#x27;cover&#x27;?Math.max(w/im.width,h/im.height):Math.min(w/im.width,h/im.height))*(animation&amp;&amp;s.effect===&#x27;zoom&#x27;?1+.08*(1-ease):1),iw=im.width*scale,ih=im.height*scale;crop={x:(w-iw)/2,y:(h-ih)/2,width:iw,height:ih};ctx.save();ctx.filter={neon:&#x27;saturate(1.45) contrast(1.1)&#x27;,film:&#x27;sepia(.38) saturate(.8) contrast(1.05)&#x27;,mono:&#x27;grayscale(1) contrast(1.15)&#x27;,editorial:&#x27;saturate(.65)&#x27;,original:&#x27;none&#x27;}[s.style||&#x27;original&#x27;];ctx.drawImage(im,crop.x,crop.y,iw,ih);ctx.restore()}if(s.style===&#x27;film&#x27;){ctx.fillStyle=&#x27;#edaa6320&#x27;;ctx.fillRect(0,0,w,h)}if(s.style===&#x27;editorial&#x27;){ctx.strokeStyle=s.color;ctx.lineWidth=2;ctx.strokeRect(36,36,w-72,h-72)}ctx.save();if(animation&amp;&amp;s.effect===&#x27;fade&#x27;)ctx.globalAlpha=ease;const slide=animation&amp;&amp;s.effect===&#x27;slide&#x27;?60*(1-ease):0;if(s.scrim&amp;&amp;s.text.trim()){const g=ctx.createLinearGradient(0,l.y-l.pad+slide,0,l.y+l.lines.length*l.lineHeight+l.pad+slide);g.addColorStop(0,&#x27;#0000&#x27;);g.addColorStop(.5,&#x27;#0009&#x27;);g.addColorStop(1,&#x27;#0000&#x27;);ctx.fillStyle=g;ctx.fillRect(0,l.y-l.pad+slide,w,l.lines.length*l.lineHeight+l.pad*2)}ctx.font=`700 ${l.effective}px ${FONT}`;ctx.fillStyle=s.color;ctx.textBaseline=&#x27;top&#x27;;ctx.textAlign=s.align;const x=(s.align===&#x27;left&#x27;?l.pad:s.align===&#x27;right&#x27;?w-l.pad:w/2)+l.shiftX;ctx.beginPath();ctx.rect(0,0,w,h);ctx.clip();let remaining=animation&amp;&amp;s.effect===&#x27;typewriter&#x27;?Math.floor(l.lines.reduce((n,t)=&gt;n+graphemes(t).length,0)*ease):Infinity;l.lines.forEach((line,i)=&gt;{const chars=graphemes(line),part=chars.slice(0,Math.max(0,remaining)).join(&#x27;&#x27;);remaining-=chars.length;ctx.fillText(part,x,l.y+i*l.lineHeight+slide)});ctx.restore();return {...l,crop}}
+function render(){stopMotion();layout=draw(state,image,$(&#x27;preview&#x27;));$(&#x27;dimensions&#x27;).textContent=`${layout.width} × ${layout.height} px`;$(&#x27;sizeValue&#x27;).textContent=state.fontSize;$(&#x27;layoutInfo&#x27;).textContent=layout.effective&lt;state.fontSize?`맞춤 크기 ${layout.effective}px · ${layout.lines.length}줄`:`PNG · ${layout.lines.length}줄 · 완성 장면 저장`;$(&#x27;preview&#x27;).dataset.layout=JSON.stringify({...layout,lines:undefined});updateSelection();syncStudio();return layout}
+function syncControls(){for(const id of [&#x27;text&#x27;,&#x27;fontSize&#x27;,&#x27;position&#x27;,&#x27;align&#x27;,&#x27;fit&#x27;,&#x27;background&#x27;])$(id).value=state[id];$(&#x27;textColor&#x27;).value=state.color;$(&#x27;scrim&#x27;).checked=state.scrim;document.querySelectorAll(&#x27;[data-ratio]&#x27;).forEach(b=&gt;b.setAttribute(&#x27;aria-pressed&#x27;,String(b.dataset.ratio===state.ratio)))}
+async function configure(patch,{normalize=true,record=true,group=null,expectedRevision=null}={}){if(recording)throw Error(&#x27;영상 저장 중에는 편집을 잠시 기다려 주세요.&#x27;);if(Object.hasOwn(patch,&#x27;position&#x27;)&amp;&amp;!Object.hasOwn(patch,&#x27;offsetY&#x27;))patch={...patch,offsetY:0};if(Object.hasOwn(patch,&#x27;align&#x27;)&amp;&amp;!Object.hasOwn(patch,&#x27;offsetX&#x27;))patch={...patch,offsetX:0};let next=validateState({...state,...patch}),nextImage=image;if(next.image!==state.image){if(next.image){if(normalize)next.image=(await normalizeDataURL(next.image)).src;nextImage=await decode(next.image)}else nextImage=null;next=validateState({...state,...patch,image:next.image})}calculateLayout(next,document.createElement(&#x27;canvas&#x27;).getContext(&#x27;2d&#x27;));if(expectedRevision!==null&amp;&amp;editRevision!==expectedRevision)return snapshot();if(record)remember(state,next,group);state=next;image=nextImage;syncControls();render();scheduleDraft();return snapshot()}
+function snapshot(){return {state:structuredClone(state),layout:structuredClone(layout),selected,templates:templates.map(t=&gt;({id:t.id,name:t.name,ratio:t.editor.ratio,text:t.editor.text}))}}
+async function importImage(file){const sequence=++readSequence,result=await normalizeFile(file);if(sequence!==readSequence)return false;await configure({image:result.src},{normalize:false});$(&#x27;imageInfo&#x27;).textContent=`${result.width} × ${result.height} · 메타데이터 제거 후 사용`;notify(&#x27;이미지를 불러왔습니다.&#x27;);return result}
+async function exportPNG(){await document.fonts.ready;render();return new Promise((resolve,reject)=&gt;$(&#x27;preview&#x27;).toBlob(b=&gt;b?resolve(b):reject(Error(&#x27;이미지를 저장하지 못했습니다.&#x27;)),&#x27;image/png&#x27;))}
+function downloadBlob(blob,name){const url=URL.createObjectURL(blob),a=document.createElement(&#x27;a&#x27;);a.href=url;a.download=name;a.click();setTimeout(()=&gt;URL.revokeObjectURL(url),2000)}
+async function openDB(name=DBNAME,stores=[&#x27;templates&#x27;]){
+  return new Promise((resolve,reject)=&gt;{
+    let settled=false,q;
+    const fail=message=&gt;{if(settled)return;settled=true;clearTimeout(timer);reject(Error(message))};
+    const timer=setTimeout(()=&gt;fail(&#x27;다른 이전 버전 탭이 저장소 연결을 막고 있습니다. 해당 탭을 새로고침한 뒤 저장소 다시 연결을 누르세요. 편집과 이미지·영상 저장은 계속 사용할 수 있습니다.&#x27;),3000);
+    try{q=indexedDB.open(name)}catch{fail(&#x27;브라우저가 저장을 허용하지 않습니다. 편집과 이미지·영상 저장은 계속 사용할 수 있습니다.&#x27;);return}
+    q.onupgradeneeded=()=&gt;{for(const store of stores)if(!q.result.objectStoreNames.contains(store))q.result.createObjectStore(store,{keyPath:&#x27;id&#x27;})};
+    q.onblocked=()=&gt;fail(&#x27;다른 이전 버전 탭이 저장소 연결을 막고 있습니다. 해당 탭을 새로고침한 뒤 저장소 다시 연결을 누르세요.&#x27;);
+    q.onerror=()=&gt;fail(&#x27;브라우저가 저장을 허용하지 않습니다. 편집과 이미지·영상 저장은 계속 사용할 수 있습니다.&#x27;);
+    q.onsuccess=()=&gt;{
+      const connection=q.result;if(settled){connection.close();return}settled=true;clearTimeout(timer);
+      connection.onversionchange=()=&gt;{connection.close();if(db===connection)db=null;if(draftDB===connection)draftDB=null;syncStorageControls();$(&#x27;draftStatus&#x27;).textContent=&#x27;저장 연결 종료 · 편집 가능&#x27;;notify(&#x27;다른 탭의 저장소 변경으로 연결을 닫았습니다. 저장소 다시 연결로 복구할 수 있습니다.&#x27;,true)};
+      resolve(connection);
+    };
+  });
+}
+function syncStorageControls(){
+  $(&#x27;createTemplate&#x27;).disabled=!db||recording;$(&#x27;updateTemplate&#x27;).disabled=!db||!selected||recording;
+  $(&#x27;jsonFile&#x27;).disabled=!db||recording;$(&#x27;exportJSON&#x27;).disabled=!db||recording;
+  $(&#x27;undoDelete&#x27;).disabled=!db||recording;$(&#x27;retryStorage&#x27;).hidden=!!db&amp;&amp;!!draftDB;
+  $(&#x27;retryStorage&#x27;).disabled=!!storageConnectTask;
+}
+async function migrateDraft(revision){
+  const read=connection=&gt;new Promise((resolve,reject)=&gt;{const q=connection.transaction(&#x27;drafts&#x27;).objectStore(&#x27;drafts&#x27;).get(&#x27;current&#x27;);q.onsuccess=()=&gt;resolve(q.result);q.onerror=()=&gt;reject(q.error)});
+  if(await read(draftDB))return;const previous=await read(db);
+  if(!previous||editRevision!==revision)return;
+  await new Promise((resolve,reject)=&gt;{const tx=draftDB.transaction(&#x27;drafts&#x27;,&#x27;readwrite&#x27;);tx.objectStore(&#x27;drafts&#x27;).put(previous);tx.oncomplete=resolve;tx.onabort=tx.onerror=()=&gt;reject(tx.error)});
+}
+function connectStorage({restore=false}={}){
+  if(storageConnectTask)return storageConnectTask;
+  const revision=editRevision;$(&#x27;draftStatus&#x27;).textContent=&#x27;저장소 연결 중…&#x27;;
+  storageConnectTask=(async()=&gt;{
+    try{
+      if(!db)db=await openDB();
+      if(!db.objectStoreNames.contains(&#x27;templates&#x27;))throw Error(&#x27;템플릿 저장소 형식을 읽을 수 없습니다. 편집 내용은 유지됩니다.&#x27;);
+      await refreshTemplates();
+      if(!draftDB)draftDB=await openDB(DBNAME+&#x27;-drafts&#x27;,[&#x27;drafts&#x27;]);
+      if(db.objectStoreNames.contains(&#x27;drafts&#x27;))await migrateDraft(revision);
+      if(restore)await restoreDraft(revision);else await flushDraft();
+      return true;
+    }catch(e){$(&#x27;draftStatus&#x27;).textContent=&#x27;자동 저장 불가 · 편집 가능&#x27;;notify(e.message,true);return false}
+    finally{storageConnectTask=null;syncStorageControls()}
+  })();
+  syncStorageControls();return storageConnectTask;
+}
+async function dbRead(){if(!db)return [];return new Promise((r,j)=&gt;{const q=db.transaction(&#x27;templates&#x27;).objectStore(&#x27;templates&#x27;).getAll();q.onsuccess=()=&gt;r(q.result);q.onerror=()=&gt;j(q.error)})}
+async function dbWrite(records){if(!db)throw Error(&#x27;이 브라우저에서 템플릿을 저장할 수 없습니다.&#x27;);return new Promise((r,j)=&gt;{const tx=db.transaction(&#x27;templates&#x27;,&#x27;readwrite&#x27;);records.forEach(t=&gt;tx.objectStore(&#x27;templates&#x27;).put(t));tx.oncomplete=r;tx.onabort=tx.onerror=()=&gt;j(Error(&#x27;저장 공간이 부족하거나 저장이 거부됐습니다. 기존 템플릿은 유지됩니다.&#x27;))})}
+async function refreshTemplates(){const all=await dbRead();templates=all.filter(t=&gt;!t.deleted).sort((a,b)=&gt;a.createdAt.localeCompare(b.createdAt));const last=all.filter(t=&gt;t.deleted).sort((a,b)=&gt;b.deletedAt.localeCompare(a.deletedAt))[0];$(&#x27;undoDelete&#x27;).hidden=!last;$(&#x27;undoDelete&#x27;).dataset.id=last?.id||&#x27;&#x27;;if(!templates.some(t=&gt;t.id===selected))selected=null;$(&#x27;updateTemplate&#x27;).disabled=!selected;renderTemplates()}
+function renderTemplates(){const list=$(&#x27;templateList&#x27;);list.replaceChildren();if(!templates.length){const p=document.createElement(&#x27;p&#x27;);p.className=&#x27;empty&#x27;;p.textContent=&#x27;첫 템플릿을 저장해 보세요.&#x27;;list.append(p);return}for(const t of templates){const row=document.createElement(&#x27;div&#x27;);row.className=&#x27;template-row&#x27;+(t.id===selected?&#x27; selected&#x27;:&#x27;&#x27;);row.dataset.id=t.id;const img=document.createElement(&#x27;img&#x27;);img.src=t.thumbnail;img.alt=&#x27;&#x27;;const detail=document.createElement(&#x27;div&#x27;),strong=document.createElement(&#x27;strong&#x27;),small=document.createElement(&#x27;small&#x27;),actions=document.createElement(&#x27;div&#x27;);strong.textContent=t.name;small.textContent=`${t.editor.ratio} · ${t.editor.text.length}자`;actions.className=&#x27;template-actions&#x27;;for(const [name,action] of [[&#x27;불러오기&#x27;,()=&gt;loadTemplate(t.id)],[&#x27;삭제&#x27;,()=&gt;deleteTemplate(t.id)]]){const b=document.createElement(&#x27;button&#x27;);b.textContent=name;b.setAttribute(&#x27;aria-label&#x27;,`${t.name} ${name}`);b.onclick=()=&gt;run(action);actions.append(b)}detail.append(strong,small,actions);row.append(img,detail);list.append(row)}}
+function validName(name){if(typeof name!==&#x27;string&#x27;||!name.trim()||name.trim().length&gt;40)throw Error(&#x27;템플릿 이름을 1~40자로 입력하세요.&#x27;);return name.trim()}
+function thumbnail(){const c=document.createElement(&#x27;canvas&#x27;);c.width=160;c.height=Math.round(160*$(&#x27;preview&#x27;).height/$(&#x27;preview&#x27;).width);c.getContext(&#x27;2d&#x27;).drawImage($(&#x27;preview&#x27;),0,0,c.width,c.height);return c.toDataURL(&#x27;image/png&#x27;)}
+function ensureTemplateBudget(records){const merged=new Map(templates.map(t=&gt;[t.id,t]));for(const t of records){if(t.deleted)merged.delete(t.id);else merged.set(t.id,t)}const data={format:&#x27;frame-lab-templates&#x27;,version:1,templates:[...merged.values()].map(t=&gt;({id:t.id,name:t.name,createdAt:t.createdAt,updatedAt:t.updatedAt,editor:t.editor}))};if(new Blob([JSON.stringify(data,null,2)]).size&gt;MAX_JSON)throw Error(&#x27;템플릿 전체 이미지와 설정은 32MB까지 보관합니다. 이미지 크기나 템플릿 수를 줄여 주세요. 기존 목록은 유지됩니다.&#x27;)}
+async function createTemplate(name){name=validName(name);if(templates.length&gt;=MAX_TEMPLATES)throw Error(&#x27;템플릿은 최대 24개까지 저장할 수 있습니다.&#x27;);const now=new Date().toISOString(),t={id:crypto.randomUUID(),name,createdAt:now,updatedAt:now,deleted:false,editor:structuredClone(state),thumbnail:thumbnail()};ensureTemplateBudget([t]);await dbWrite([t]);selected=t.id;await refreshTemplates();notify(`“${name}” 템플릿을 저장했습니다.`);return {id:t.id,name}}
+async function loadTemplate(id){const t=templates.find(x=&gt;x.id===id);if(!t)throw Error(&#x27;선택한 템플릿을 찾을 수 없습니다.&#x27;);await configure(t.editor,{normalize:false});selected=t.id;$(&#x27;templateName&#x27;).value=t.name;$(&#x27;imageInfo&#x27;).textContent=t.editor.image?&#x27;템플릿 이미지 · 메타데이터 제거 후 보관&#x27;:&#x27;템플릿 · 단색 배경&#x27;;await refreshTemplates();notify(`“${t.name}” 템플릿을 불러왔습니다.`);return snapshot()}
+async function updateTemplate(id,name){const t=templates.find(x=&gt;x.id===id);if(!t)throw Error(&#x27;수정할 템플릿을 먼저 불러오세요.&#x27;);name=validName(name);const updated={...t,name,updatedAt:new Date().toISOString(),editor:structuredClone(state),thumbnail:thumbnail()};ensureTemplateBudget([updated]);await dbWrite([updated]);await refreshTemplates();notify(`“${name}” 템플릿을 수정했습니다.`);return {id,name}}
+async function deleteTemplate(id){const t=templates.find(x=&gt;x.id===id);if(!t)throw Error(&#x27;삭제할 템플릿을 찾을 수 없습니다.&#x27;);await dbWrite([{...t,deleted:true,deletedAt:new Date().toISOString()}]);await refreshTemplates();notify(`“${t.name}” 템플릿을 삭제했습니다. 삭제 취소로 복구할 수 있습니다.`);return {id,deleted:true}}
+async function undoDelete(){const all=await dbRead(),t=all.find(x=&gt;x.id===$(&#x27;undoDelete&#x27;).dataset.id);if(!t)throw Error(&#x27;복구할 템플릿이 없습니다.&#x27;);if(templates.length&gt;=MAX_TEMPLATES)throw Error(&#x27;템플릿 수가 24개입니다. 항목을 줄인 뒤 복구하세요.&#x27;);ensureTemplateBudget([{...t,deleted:false}]);await dbWrite([{...t,deleted:false}]);await refreshTemplates();notify(&#x27;삭제한 템플릿을 복구했습니다.&#x27;)}
+function exportJSON(){return JSON.stringify({format:&#x27;frame-lab-templates&#x27;,version:1,templates:templates.map(t=&gt;({id:t.id,name:t.name,createdAt:t.createdAt,updatedAt:t.updatedAt,editor:t.editor}))},null,2)}
+async function importJSON(raw){if(typeof raw!==&#x27;string&#x27;||new Blob([raw]).size&gt;MAX_JSON)throw Error(&#x27;JSON 파일은 최대 32MB까지 지원합니다.&#x27;);let parsed;try{parsed=JSON.parse(raw)}catch{throw Error(&#x27;JSON 문법이 손상됐습니다. 기존 템플릿은 유지됩니다.&#x27;)}if(!parsed||parsed.format!==&#x27;frame-lab-templates&#x27;||parsed.version!==1||!Array.isArray(parsed.templates)||parsed.templates.length&gt;MAX_TEMPLATES)throw Error(&#x27;템플릿 JSON 형식·버전·개수가 올바르지 않습니다. 기존 목록은 유지됩니다.&#x27;);const ids=new Set(),next=[];for(const t of parsed.templates){if(!t||typeof t.id!==&#x27;string&#x27;||!/^[a-z0-9_-]{8,80}$/i.test(t.id)||ids.has(t.id)||typeof t.createdAt!==&#x27;string&#x27;||typeof t.updatedAt!==&#x27;string&#x27;||!Number.isFinite(Date.parse(t.createdAt))||!Number.isFinite(Date.parse(t.updatedAt)))throw Error(&#x27;필수 항목이 빠졌거나 템플릿 ID·날짜가 올바르지 않습니다. 기존 목록은 유지됩니다.&#x27;);ids.add(t.id);const name=validName(t.name),editor=validateState(t.editor);let im=null;if(editor.image){editor.image=(await normalizeDataURL(editor.image)).src;im=await decode(editor.image)}const c=document.createElement(&#x27;canvas&#x27;);draw(editor,im,c);const thumb=document.createElement(&#x27;canvas&#x27;);thumb.width=160;thumb.height=Math.round(160*c.height/c.width);thumb.getContext(&#x27;2d&#x27;).drawImage(c,0,0,thumb.width,thumb.height);next.push({id:t.id,name,createdAt:t.createdAt,updatedAt:t.updatedAt,editor,deleted:false,thumbnail:thumb.toDataURL(&#x27;image/png&#x27;)})}if(new Set([...templates.map(t=&gt;t.id),...ids]).size&gt;MAX_TEMPLATES)throw Error(&#x27;가져오기 후 템플릿이 24개를 넘습니다. 기존 목록은 유지됩니다.&#x27;);ensureTemplateBudget(next);await dbWrite(next);await refreshTemplates();notify(`${next.length}개 템플릿을 복원했습니다. 같은 ID는 갱신하고 나머지 항목은 유지했습니다.`);return {imported:next.length,total:templates.length}}
+function run(action){const execute=async()=&gt;{busy=true;try{return await action()}catch(e){notify(e.message||&#x27;작업을 완료하지 못했습니다. 기존 작업은 유지됩니다.&#x27;,true)}finally{busy=false}};const operation=actionQueue.then(execute,execute);actionQueue=operation.catch(()=&gt;{});return operation}
+// Studio state is separate from the current card and stored templates.
+let undoStack=[],redoStack=[],lastAction=null,draftTimer=0,draftSequence=0,draftPending=Promise.resolve(),motionFrame=0,motionStart=0,recording=false,drag=null,dragSequence=0,editRevision=0,storageConnectTask=null,storageReady=Promise.resolve(false);
+const HISTORY_LIMIT=40;
+function changed(a,b){return Object.keys(DEFAULT).some(k=&gt;a[k]!==b[k])}
+function remember(previous,next,group=null){
+  if(!changed(previous,next))return;editRevision++;
+  const now=performance.now();
+  if(!group||!lastAction||lastAction.group!==group||now-lastAction.time&gt;650)undoStack.push({...previous});
+  while(undoStack.length&gt;HISTORY_LIMIT)undoStack.shift();
+  while(undoStack.length&gt;1&amp;&amp;[...new Set(undoStack.map(s=&gt;s.image).filter(Boolean))].reduce((n,s)=&gt;n+s.length,0)&gt;MAX_JSON)undoStack.shift();
+  redoStack=[];lastAction={group,time:now};
+}
+async function undo(){if(!undoStack.length||recording)return;const target=undoStack.at(-1),previous={...state};await configure(target,{normalize:false,record:false});undoStack.pop();redoStack.push(previous);lastAction=null;syncStudio();notify(&#x27;이전 편집으로 되돌렸습니다.&#x27;)}
+async function redo(){if(!redoStack.length||recording)return;const target=redoStack.at(-1),previous={...state};await configure(target,{normalize:false,record:false});redoStack.pop();undoStack.push(previous);lastAction=null;syncStudio();notify(&#x27;편집을 다시 적용했습니다.&#x27;)}
+function syncStudio(){
+  $(&#x27;undo&#x27;).disabled=!undoStack.length||recording;$(&#x27;redo&#x27;).disabled=!redoStack.length||recording;
+  document.querySelectorAll(&#x27;[data-preset]&#x27;).forEach(b=&gt;b.setAttribute(&#x27;aria-pressed&#x27;,String(b.dataset.preset===state.style)));
+  document.querySelectorAll(&#x27;[data-effect]&#x27;).forEach(b=&gt;b.setAttribute(&#x27;aria-pressed&#x27;,String(b.dataset.effect===state.effect)));
+  $(&#x27;playMotion&#x27;).disabled=recording||state.effect===&#x27;none&#x27;||$(&#x27;reduceMotion&#x27;).checked;
+  $(&#x27;playMotion&#x27;).textContent=motionFrame?&#x27;정지&#x27;:&#x27;재생&#x27;;$(&#x27;playMotion&#x27;).setAttribute(&#x27;aria-label&#x27;,motionFrame?&#x27;효과 미리보기 정지&#x27;:&#x27;효과 미리보기 재생&#x27;);
+  $(&#x27;downloadVideo&#x27;).disabled=recording||!videoSupported()||state.effect===&#x27;none&#x27;||$(&#x27;reduceMotion&#x27;).checked;
+  $(&#x27;download&#x27;).disabled=recording;$(&#x27;newCard&#x27;).disabled=recording;
+  $(&#x27;motionInfo&#x27;).textContent=recording?&#x27;3초 영상을 만들고 있습니다. 이 화면을 유지해 주세요.&#x27;:$(&#x27;reduceMotion&#x27;).checked?&#x27;움직임을 줄였습니다. 정지 카드 편집과 PNG 저장을 사용할 수 있습니다.&#x27;:!videoSupported()?&#x27;이 브라우저는 WebM 저장을 지원하지 않습니다. 미리보기와 PNG는 사용할 수 있습니다.&#x27;:state.effect===&#x27;none&#x27;?&#x27;페이드·슬라이드·타이핑·줌 중 하나를 선택하면 재생과 영상 저장을 사용할 수 있습니다.&#x27;:&#x27;PNG는 효과가 끝난 완성 장면을 저장합니다. 영상은 3초 WebM입니다.&#x27;;
+}
+function updateSelection(){
+  if(!layout)return;const selection=$(&#x27;textSelection&#x27;),canvas=$(&#x27;preview&#x27;),r=canvas.getBoundingClientRect(),parent=$(&#x27;canvasWrap&#x27;).getBoundingClientRect();
+  selection.hidden=!state.text.trim()||recording||!!motionFrame;
+  const left=Math.min(...layout.boxes.map(b=&gt;b.x)),right=Math.max(...layout.boxes.map(b=&gt;b.x+b.width)),sx=r.width/layout.width,sy=r.height/layout.height;
+  selection.style.left=(r.left-parent.left+left*sx-6)+&#x27;px&#x27;;selection.style.top=(r.top-parent.top+layout.y*sy-6)+&#x27;px&#x27;;selection.style.width=(Math.max(20,(right-left)*sx)+12)+&#x27;px&#x27;;selection.style.height=(layout.lines.length*layout.lineHeight*sy+12)+&#x27;px&#x27;;
+}
+async function moveText(dx,dy,group=null){
+  const patch={offsetX:Math.max(-1,Math.min(1,(layout.shiftX+dx)/layout.width)),offsetY:Math.max(-1,Math.min(1,(layout.shiftY+dy)/layout.height))};
+  return configure(patch,{group});
+}
+async function applyPreset(name){
+  const presets={neon:{style:&#x27;neon&#x27;,color:&#x27;#d6ff79&#x27;,background:&#x27;#111b28&#x27;,align:&#x27;left&#x27;,position:&#x27;bottom&#x27;,fontSize:88,scrim:true},film:{style:&#x27;film&#x27;,color:&#x27;#fff0d8&#x27;,background:&#x27;#30251d&#x27;,align:&#x27;center&#x27;,position:&#x27;center&#x27;,fontSize:78,scrim:true},mono:{style:&#x27;mono&#x27;,color:&#x27;#ffffff&#x27;,background:&#x27;#111111&#x27;,align:&#x27;center&#x27;,position:&#x27;center&#x27;,fontSize:72,scrim:true},editorial:{style:&#x27;editorial&#x27;,color:&#x27;#ffffff&#x27;,background:&#x27;#17202b&#x27;,align:&#x27;left&#x27;,position:&#x27;top&#x27;,fontSize:82,scrim:true}};
+  if(!presets[name])throw Error(&#x27;지원하지 않는 디자인입니다.&#x27;);await configure({...presets[name],offsetX:0,offsetY:0});notify(&#x27;디자인을 적용했습니다. 문구와 이미지는 유지됩니다. 실행 취소로 되돌릴 수 있습니다.&#x27;);
+}
+function scheduleDraft(){if(!draftDB)return;clearTimeout(draftTimer);$(&#x27;draftStatus&#x27;).textContent=&#x27;저장 중…&#x27;;draftTimer=setTimeout(()=&gt;flushDraft().catch(()=&gt;{}),400)}
+async function flushDraft(){
+  clearTimeout(draftTimer);if(!draftDB)return false;const item={id:&#x27;current&#x27;,editor:{...state},updatedAt:new Date().toISOString()},sequence=++draftSequence;
+  const operation=draftPending.catch(()=&gt;{}).then(()=&gt;new Promise((resolve,reject)=&gt;{const tx=draftDB.transaction(&#x27;drafts&#x27;,&#x27;readwrite&#x27;);tx.objectStore(&#x27;drafts&#x27;).put(item);tx.oncomplete=()=&gt;resolve(true);tx.onabort=tx.onerror=()=&gt;reject(Error(&#x27;자동 저장 공간이 부족합니다. PNG 또는 템플릿 JSON으로 보관해 주세요.&#x27;))}));
+  draftPending=operation;try{await operation;if(sequence===draftSequence)$(&#x27;draftStatus&#x27;).textContent=&#x27;이 브라우저에 저장됨&#x27;;return true}catch(e){$(&#x27;draftStatus&#x27;).textContent=&#x27;자동 저장 불가&#x27;;notify(e.message,true);return false}
+}
+function cleanStoredImage(src){
+  if(!/^data:image\/(png|jpeg);base64,[A-Za-z0-9+/]+=*$/.test(src)||src.length&gt;MAX_JSON*4/3+100)throw Error(&#x27;저장 이미지 형식이 올바르지 않습니다.&#x27;);
+  const type=src.slice(5,src.indexOf(&#x27;;&#x27;)),bytes=Uint8Array.from(atob(src.split(&#x27;,&#x27;)[1]),c=&gt;c.charCodeAt(0)),parts=[];
+  const png=bytes.length&gt;=8&amp;&amp;[137,80,78,71,13,10,26,10].every((v,i)=&gt;bytes[i]===v),jpeg=bytes.length&gt;=3&amp;&amp;bytes[0]===255&amp;&amp;bytes[1]===216&amp;&amp;bytes[2]===255;
+  if((type===&#x27;image/png&#x27;&amp;&amp;!png)||(type===&#x27;image/jpeg&#x27;&amp;&amp;!jpeg))throw Error(&#x27;저장 이미지 서명이 올바르지 않습니다.&#x27;);
+  const dims=imageDimensions(bytes,type);if(!dims||!dims[0]||!dims[1]||dims[0]*dims[1]&gt;MAX_PIXELS)throw Error(&#x27;저장 이미지 크기가 올바르지 않습니다.&#x27;);
+  const view=new DataView(bytes.buffer);
+  if(png){
+    parts.push(bytes.slice(0,8));let i=8;
+    while(i&lt;bytes.length){if(i+12&gt;bytes.length)throw Error(&#x27;저장 PNG가 손상됐습니다.&#x27;);const length=view.getUint32(i),end=i+length+12;if(end&gt;bytes.length)throw Error(&#x27;저장 PNG가 손상됐습니다.&#x27;);const chunk=String.fromCharCode(...bytes.slice(i+4,i+8));if(![&#x27;eXIf&#x27;,&#x27;tEXt&#x27;,&#x27;iTXt&#x27;,&#x27;zTXt&#x27;].includes(chunk))parts.push(bytes.slice(i,end));i=end;if(chunk===&#x27;IEND&#x27;)break;}
+  }else{
+    parts.push(bytes.slice(0,2));let i=2;
+    while(i&lt;bytes.length){if(bytes[i]!==255||i+2&gt;=bytes.length)throw Error(&#x27;저장 JPEG가 손상됐습니다.&#x27;);const marker=bytes[i+1];if(marker===218||marker===217){parts.push(bytes.slice(i));break;}const length=view.getUint16(i+2),end=i+2+length;if(length&lt;2||end&gt;bytes.length)throw Error(&#x27;저장 JPEG가 손상됐습니다.&#x27;);if(marker!==225&amp;&amp;marker!==237)parts.push(bytes.slice(i,end));i=end;}
+  }
+  const size=parts.reduce((n,b)=&gt;n+b.length,0),clean=new Uint8Array(size);let offset=0;for(const part of parts){clean.set(part,offset);offset+=part.length;}let binary=&#x27;&#x27;;for(let i=0;i&lt;size;i+=8192)binary+=String.fromCharCode(...clean.subarray(i,i+8192));return &#x27;data:&#x27;+type+&#x27;;base64,&#x27;+btoa(binary);
+}
+async function restoreDraft(revision=null){
+  if(!draftDB){$(&#x27;draftStatus&#x27;).textContent=&#x27;자동 저장 불가&#x27;;return}
+  const item=await new Promise((resolve,reject)=&gt;{const q=draftDB.transaction(&#x27;drafts&#x27;).objectStore(&#x27;drafts&#x27;).get(&#x27;current&#x27;);q.onsuccess=()=&gt;resolve(q.result);q.onerror=()=&gt;reject(q.error)});
+  if(revision!==null&amp;&amp;editRevision!==revision){scheduleDraft();return}
+  if(!item){scheduleDraft();return}
+  try{const editor=validateState(item.editor);if(editor.image)editor.image=cleanStoredImage(editor.image);await configure(editor,{normalize:false,record:false,expectedRevision:revision});if(revision!==null&amp;&amp;editRevision!==revision){scheduleDraft();return}$(&#x27;imageInfo&#x27;).textContent=editor.image?&#x27;자동 복구 이미지 · 메타데이터 제거 후 사용&#x27;:&#x27;자동 복구 · 단색 배경&#x27;;notify(&#x27;작성 중이던 카드를 복구했습니다. 새 카드로 처음부터 시작할 수 있습니다.&#x27;)}catch{notify(&#x27;저장된 작업을 읽을 수 없어 기본 카드로 시작했습니다. 저장한 템플릿은 유지됩니다.&#x27;,true);scheduleDraft()}
+}
+function stopMotion(){if(motionFrame)cancelAnimationFrame(motionFrame);motionFrame=0;if($(&#x27;playMotion&#x27;))$(&#x27;playMotion&#x27;).textContent=&#x27;재생&#x27;}
+function playMotion(){
+  if(recording||state.effect===&#x27;none&#x27;||$(&#x27;reduceMotion&#x27;).checked)return false;
+  if(motionFrame){stopMotion();render();return false}
+  motionStart=performance.now();
+  const frame=now=&gt;{const progress=Math.min(1,(now-motionStart)/3000);draw(state,image,$(&#x27;preview&#x27;),{progress});if(progress&lt;1){motionFrame=requestAnimationFrame(frame);syncStudio();updateSelection()}else{motionFrame=0;render()}};
+  motionFrame=requestAnimationFrame(frame);syncStudio();updateSelection();return true;
+}
+function videoMime(){return typeof MediaRecorder===&#x27;function&#x27;?[&#x27;video/webm;codecs=vp9&#x27;,&#x27;video/webm;codecs=vp8&#x27;,&#x27;video/webm&#x27;].find(t=&gt;MediaRecorder.isTypeSupported(t)):null}
+function videoSupported(){return typeof HTMLCanvasElement.prototype.captureStream===&#x27;function&#x27;&amp;&amp;!!videoMime()}
+async function exportVideo(){
+  if(!videoSupported())throw Error(&#x27;이 브라우저는 WebM 저장을 지원하지 않습니다.&#x27;);
+  if(state.effect===&#x27;none&#x27;||$(&#x27;reduceMotion&#x27;).checked)throw Error(&#x27;움직임 효과를 선택하고 움직임 줄이기를 꺼 주세요.&#x27;);
+  if(recording)throw Error(&#x27;영상을 이미 만들고 있습니다.&#x27;);
+  await document.fonts.ready;stopMotion();const card={...state},source=image,c=document.createElement(&#x27;canvas&#x27;);draw(card,source,c,{progress:0});
+  const stream=c.captureStream(30),recorder=new MediaRecorder(stream,{mimeType:videoMime(),videoBitsPerSecond:6000000}),chunks=[];let frameId=0,abortReason=null;
+  recording=true;syncStudio();updateSelection();document.querySelectorAll(&#x27;.controls input,.controls select,.controls textarea,[data-ratio],[data-preset],[data-effect],#sample,#removeImage,#resetStyle,#createTemplate,#updateTemplate,#exportJSON,#jsonFile&#x27;).forEach(el=&gt;el.disabled=true);
+  const visibility=()=&gt;{if(document.hidden){abortReason=Error(&#x27;다른 화면으로 이동해 영상 생성을 중단했습니다. 다시 시도해 주세요.&#x27;);if(recorder.state!==&#x27;inactive&#x27;)recorder.stop()}};
+  document.addEventListener(&#x27;visibilitychange&#x27;,visibility);
+  try{return await new Promise((resolve,reject)=&gt;{
+    recorder.ondataavailable=e=&gt;{if(e.data.size)chunks.push(e.data)};
+    recorder.onerror=()=&gt;{abortReason=Error(&#x27;브라우저가 영상을 만들지 못했습니다. PNG로 저장하거나 다시 시도해 주세요.&#x27;);if(recorder.state!==&#x27;inactive&#x27;)recorder.stop();else reject(abortReason)};
+    recorder.onstop=()=&gt;{cancelAnimationFrame(frameId);const blob=new Blob(chunks,{type:&#x27;video/webm&#x27;});if(abortReason)reject(abortReason);else if(!blob.size)reject(Error(&#x27;영상이 비어 있습니다. 다시 시도해 주세요.&#x27;));else resolve(blob)};
+    recorder.start(100);const start=performance.now();const tick=now=&gt;{try{const p=Math.min(1,(now-start)/3000);draw(card,source,c,{progress:p});draw(card,source,$(&#x27;preview&#x27;),{progress:p});if(p&lt;1)frameId=requestAnimationFrame(tick);else if(recorder.state!==&#x27;inactive&#x27;)recorder.stop()}catch(e){abortReason=e;if(recorder.state!==&#x27;inactive&#x27;)recorder.stop()}};frameId=requestAnimationFrame(tick);
+  })}finally{
+    cancelAnimationFrame(frameId);stream.getTracks().forEach(t=&gt;t.stop());document.removeEventListener(&#x27;visibilitychange&#x27;,visibility);recording=false;
+    document.querySelectorAll(&#x27;.controls input,.controls select,.controls textarea,[data-ratio],[data-preset],[data-effect],#sample,#removeImage,#resetStyle,#createTemplate,#updateTemplate,#exportJSON,#jsonFile&#x27;).forEach(el=&gt;el.disabled=false);
+    if(!db){$(&#x27;createTemplate&#x27;).disabled=true;$(&#x27;jsonFile&#x27;).disabled=true}$(&#x27;updateTemplate&#x27;).disabled=!selected;render();syncStorageControls();
+  }
+}
+function bindStudio(){
+  $(&#x27;retryStorage&#x27;).onclick=()=&gt;connectStorage();
+  $(&#x27;undo&#x27;).onclick=()=&gt;run(undo);$(&#x27;redo&#x27;).onclick=()=&gt;run(redo);
+  $(&#x27;newCard&#x27;).onclick=()=&gt;run(async()=&gt;{readSequence++;await configure({...DEFAULT,image:sampleImage()},{normalize:false});selected=null;$(&#x27;templateName&#x27;).value=&#x27;&#x27;;await refreshTemplates();notify(&#x27;새 카드를 시작했습니다. 실행 취소로 이전 작업을 복구할 수 있습니다.&#x27;)});
+  document.querySelectorAll(&#x27;[data-preset]&#x27;).forEach(b=&gt;b.onclick=()=&gt;run(()=&gt;applyPreset(b.dataset.preset)));
+  $(&#x27;resetStyle&#x27;).onclick=()=&gt;run(()=&gt;configure({style:&#x27;original&#x27;,color:&#x27;#ffffff&#x27;,background:&#x27;#171922&#x27;}));
+  const savedMotion=(()=&gt;{try{return localStorage.getItem(&#x27;frame-lab-reduce-motion&#x27;)}catch{return null}})();
+  $(&#x27;reduceMotion&#x27;).checked=savedMotion===null?matchMedia(&#x27;(prefers-reduced-motion: reduce)&#x27;).matches:savedMotion===&#x27;true&#x27;;
+  $(&#x27;reduceMotion&#x27;).onchange=()=&gt;{try{localStorage.setItem(&#x27;frame-lab-reduce-motion&#x27;,String($(&#x27;reduceMotion&#x27;).checked))}catch{}stopMotion();render()};
+  matchMedia(&#x27;(prefers-reduced-motion: reduce)&#x27;).addEventListener(&#x27;change&#x27;,e=&gt;{if(e.matches){$(&#x27;reduceMotion&#x27;).checked=true;stopMotion();render()}});
+  document.querySelectorAll(&#x27;[data-effect]&#x27;).forEach(b=&gt;b.onclick=()=&gt;run(async()=&gt;{await configure({effect:b.dataset.effect});playMotion()}));
+  $(&#x27;playMotion&#x27;).onclick=()=&gt;playMotion();$(&#x27;downloadVideo&#x27;).onclick=()=&gt;run(async()=&gt;{downloadBlob(await exportVideo(),`frame-lab-${state.ratio.replace(&#x27;:&#x27;,&#x27;x&#x27;)}.webm`);notify(&#x27;3초 WebM 영상을 저장했습니다.&#x27;)});
+  $(&#x27;focusMode&#x27;).onclick=()=&gt;{const active=document.body.classList.toggle(&#x27;focus-mode&#x27;);$(&#x27;focusMode&#x27;).setAttribute(&#x27;aria-pressed&#x27;,String(active));$(&#x27;focusMode&#x27;).textContent=active?&#x27;편집 패널 보기&#x27;:&#x27;집중 모드&#x27;;requestAnimationFrame(updateSelection)};
+  const selection=$(&#x27;textSelection&#x27;);
+  selection.addEventListener(&#x27;pointerdown&#x27;,e=&gt;{if(e.button!==0||busy||recording)return;e.preventDefault();stopMotion();render();selection.focus();try{selection.setPointerCapture(e.pointerId)}catch{}drag={id:e.pointerId,x:e.clientX,y:e.clientY,shiftX:layout.shiftX,shiftY:layout.shiftY,group:&#x27;drag-&#x27;+(++dragSequence)};selection.classList.add(&#x27;dragging&#x27;)});
+  selection.addEventListener(&#x27;pointermove&#x27;,e=&gt;{if(!drag||drag.id!==e.pointerId)return;const r=$(&#x27;preview&#x27;).getBoundingClientRect(),dx=(e.clientX-drag.x)*layout.width/r.width,dy=(e.clientY-drag.y)*layout.height/r.height;configure({offsetX:Math.max(-1,Math.min(1,(drag.shiftX+dx)/layout.width)),offsetY:Math.max(-1,Math.min(1,(drag.shiftY+dy)/layout.height))},{group:drag.group}).catch(e=&gt;notify(e.message,true))});
+  const endDrag=()=&gt;{drag=null;selection.classList.remove(&#x27;dragging&#x27;);lastAction=null};selection.addEventListener(&#x27;pointerup&#x27;,endDrag);selection.addEventListener(&#x27;pointercancel&#x27;,endDrag);selection.addEventListener(&#x27;lostpointercapture&#x27;,endDrag);
+  selection.addEventListener(&#x27;keydown&#x27;,e=&gt;{if(![&#x27;ArrowLeft&#x27;,&#x27;ArrowRight&#x27;,&#x27;ArrowUp&#x27;,&#x27;ArrowDown&#x27;].includes(e.key)||recording)return;e.preventDefault();const step=e.shiftKey?20:4;moveText(e.key===&#x27;ArrowLeft&#x27;?-step:e.key===&#x27;ArrowRight&#x27;?step:0,e.key===&#x27;ArrowUp&#x27;?-step:e.key===&#x27;ArrowDown&#x27;?step:0,&#x27;keyboard-move&#x27;).catch(x=&gt;notify(x.message,true))});
+  document.addEventListener(&#x27;keydown&#x27;,e=&gt;{if(e.key===&#x27;Escape&#x27;&amp;&amp;document.body.classList.contains(&#x27;focus-mode&#x27;))$(&#x27;focusMode&#x27;).click();if((e.ctrlKey||e.metaKey)&amp;&amp;e.key.toLowerCase()===&#x27;z&#x27;&amp;&amp;![&#x27;INPUT&#x27;,&#x27;TEXTAREA&#x27;].includes(document.activeElement.tagName)){e.preventDefault();run(e.shiftKey?redo:undo)}});
+  new ResizeObserver(updateSelection).observe($(&#x27;canvasWrap&#x27;));window.addEventListener(&#x27;pagehide&#x27;,()=&gt;{stopMotion();flushDraft().catch(()=&gt;{})});document.addEventListener(&#x27;visibilitychange&#x27;,()=&gt;{if(document.hidden){stopMotion();if(!recording)render()}});syncStudio();
+}
+
+function bind(){for(const id of [&#x27;text&#x27;,&#x27;fontSize&#x27;,&#x27;position&#x27;,&#x27;align&#x27;,&#x27;fit&#x27;,&#x27;background&#x27;,&#x27;scrim&#x27;,&#x27;textColor&#x27;])$(id).addEventListener(&#x27;input&#x27;,()=&gt;{const k=id===&#x27;textColor&#x27;?&#x27;color&#x27;:id,value=id===&#x27;scrim&#x27;?$(id).checked:id===&#x27;fontSize&#x27;?Number($(id).value):$(id).value,next={...state,[k]:value};try{validateState(next);calculateLayout(next,document.createElement(&#x27;canvas&#x27;).getContext(&#x27;2d&#x27;));if(recording)throw Error(&#x27;영상 저장 중에는 편집을 잠시 기다려 주세요.&#x27;);if(k===&#x27;position&#x27;)next.offsetY=0;if(k===&#x27;align&#x27;)next.offsetX=0;remember(state,next,k);state=next;render();scheduleDraft()}catch(e){syncControls();notify(e.message,true)}});document.querySelectorAll(&#x27;[data-ratio]&#x27;).forEach(b=&gt;b.onclick=()=&gt;run(()=&gt;configure({ratio:b.dataset.ratio})));$(&#x27;sample&#x27;).onclick=()=&gt;run(()=&gt;configure({image:sampleImage()}));$(&#x27;removeImage&#x27;).onclick=()=&gt;run(async()=&gt;{readSequence++;await configure({image:null});$(&#x27;imageInfo&#x27;).textContent=&#x27;이미지 없음 · 단색 배경&#x27;});$(&#x27;download&#x27;).onclick=()=&gt;run(async()=&gt;{downloadBlob(await exportPNG(),`frame-lab-${state.ratio.replace(&#x27;:&#x27;,&#x27;x&#x27;)}.png`);notify(&#x27;PNG 이미지를 내려받았습니다. 미리보기와 같은 배치입니다.&#x27;)});$(&#x27;imageFile&#x27;).onchange=e=&gt;{const f=e.target.files[0];e.target.value=&#x27;&#x27;;if(f)run(()=&gt;importImage(f))};$(&#x27;createTemplate&#x27;).onclick=()=&gt;run(()=&gt;createTemplate($(&#x27;templateName&#x27;).value));$(&#x27;updateTemplate&#x27;).onclick=()=&gt;run(()=&gt;updateTemplate(selected,$(&#x27;templateName&#x27;).value));$(&#x27;undoDelete&#x27;).onclick=()=&gt;run(undoDelete);$(&#x27;exportJSON&#x27;).onclick=()=&gt;run(()=&gt;{downloadBlob(new Blob([exportJSON()],{type:&#x27;application/json&#x27;}),&#x27;frame-lab-templates.json&#x27;);notify(&#x27;템플릿 JSON을 내려받았습니다.&#x27;)});$(&#x27;jsonFile&#x27;).onchange=e=&gt;{const f=e.target.files[0];e.target.value=&#x27;&#x27;;if(f)run(async()=&gt;{if(f.size&gt;MAX_JSON)throw Error(&#x27;JSON은 최대 32MB까지 지원합니다.&#x27;);return importJSON(await f.text())})}}
+bind();await document.fonts.ready;await configure({image:sampleImage()},{normalize:false,record:false});bindStudio();undoStack=[];redoStack=[];syncStudio();syncStorageControls();storageReady=connectStorage({restore:true});
+if(LAB)window.FrameLab={whenStorageReady:()=&gt;storageReady,getStorageState:()=&gt;({templates:!!db,drafts:!!draftDB,templateVersion:db?.version,draftVersion:draftDB?.version}),undo,redo,moveText,applyPreset,flushDraft,playMotion,stopMotion,exportVideo,getStudioState:()=&gt;({busy,undo:undoStack.length,redo:redoStack.length,playing:!!motionFrame,recording,reduced:$(&#x27;reduceMotion&#x27;).checked}),configure,snapshot,importImage,exportPNG,createTemplate,loadTemplate,updateTemplate,deleteTemplate,undoDelete,importJSON,exportJSON,refreshTemplates,sampleImage,normalizeFile,draw,dbName:DBNAME};
+if(document.modelContext?.registerTool){const context=document.modelContext,lifecycle=new AbortController();const register=(name,description,properties,required,execute,readOnlyHint=false)=&gt;{try{Promise.resolve(context.registerTool({name,description,inputSchema:{type:&#x27;object&#x27;,properties,required,additionalProperties:false},annotations:{readOnlyHint,untrustedContentHint:true},execute},{signal:lifecycle.signal})).catch(()=&gt;{})}catch{}};register(&#x27;get_card_state&#x27;,&#x27;현재 카드 설정과 사용자 템플릿 목록을 읽습니다.&#x27;,{},[],()=&gt;({ratio:state.ratio,text:state.text,fontSize:state.fontSize,color:state.color,position:state.position,templates:snapshot().templates}),true);register(&#x27;configure_card&#x27;,&#x27;문구·비율·위치를 변경하고 카드 미리보기에 반영합니다.&#x27;,{text:{type:&#x27;string&#x27;,maxLength:2000},ratio:{type:&#x27;string&#x27;,enum:Object.keys(SIZES)},position:{type:&#x27;string&#x27;,enum:[&#x27;top&#x27;,&#x27;center&#x27;,&#x27;bottom&#x27;]}},[],async input=&gt;{if(!input||Object.keys(input).some(k=&gt;![&#x27;text&#x27;,&#x27;ratio&#x27;,&#x27;position&#x27;].includes(k)))throw Error(&#x27;허용되지 않은 편집 입력입니다.&#x27;);await configure(input);return {ratio:state.ratio,lineCount:layout.lines.length,effectiveFontSize:layout.effective}});register(&#x27;create_card_template&#x27;,&#x27;현재 카드를 이 브라우저에 새 템플릿으로 저장합니다.&#x27;,{name:{type:&#x27;string&#x27;,minLength:1,maxLength:40}},[&#x27;name&#x27;],async input=&gt;createTemplate(input.name));window.addEventListener(&#x27;pagehide&#x27;,()=&gt;lifecycle.abort(),{once:true})}
+</code></pre></details><details><summary>style.css</summary><pre><code>/* FRAME LAB / refined studio surfaces */
+:root {
+  color-scheme: dark;
+  --bg: #0d100f;
+  --panel: #151a17;
+  --field: #0e1310;
+  --line: #303b33;
+  --text: #f2f5f0;
+  --muted: #a8b4aa;
+  --accent: #d5f59a;
+  font-family: &quot;Segoe UI&quot;, &quot;Malgun Gothic&quot;, sans-serif;
+  font-size: 16px;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--text); }
+button, input, select, textarea { font: inherit; }
+h1, h2, h3, p { margin: 0; }
+button, .file-button {
+  min-height: 40px; padding: 9px 12px; border: 1px solid var(--line);
+  border-radius: 9px; background: #202821; color: var(--text);
+  font-size: .875rem; font-weight: 600; cursor: pointer;
+  transition: background .16s, border-color .16s, box-shadow .16s;
+}
+button:hover, .file-button:hover { background: #2a352b; border-color: #586750; }
+button:active, .file-button:active { background: #354032; }
+button:disabled { opacity: .42; cursor: not-allowed; }
+button.primary { background: var(--accent); color: #18220d; border-color: var(--accent); }
+button.primary:hover { background: #e3ffb5; border-color: #e3ffb5; }
+button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible,
+a:focus-visible, .upload-zone:has(+input:focus-visible), .file-button:has(+input:focus-visible) {
+  outline: 3px solid var(--accent); outline-offset: 3px;
+}
+.topbar {
+  min-height: 76px; padding: 16px 28px; display: flex; align-items: center;
+  gap: 20px; border-bottom: 1px solid #29322c; background: #141914;
+}
+.brand {
+  display: flex; align-items: center; gap: 9px; text-decoration: none;
+  color: var(--text); font-size: 1.125rem; font-weight: 750; letter-spacing: .06em;
+  white-space: nowrap;
+}
+.brand b { font-weight: 400; color: #c2ccbf; }
+.mark {
+  width: 34px; height: 34px; display: grid; place-items: center; color: var(--accent);
+  border: 1px solid #7d975c; border-radius: 10px; background: #253021;
+  font-size: 1.25rem; font-weight: 750; box-shadow: inset 0 1px 0 #ffffff12;
+}
+.top-label { font-size: .8125rem; color: var(--muted); padding-left: 20px; border-left: 1px solid #3c4639; }
+.draft-status { margin-left: auto; color: #c0cdad; font-size: .8125rem; }
+.history-tools { display: flex; flex-shrink: 0; gap: 5px; }
+.history-tools button { background: transparent; border-color: transparent; color: #c2ccbf; min-height: 36px; padding: 7px 10px; }
+.history-tools button:hover { background: #243023; border-color: #3b4834; }
+#newCard { border-color: #45513d; margin-left: 3px; }
+.topbar button { white-space: nowrap; flex-shrink: 0; }
+#download { padding-left: 19px; padding-right: 19px; box-shadow: 0 3px 16px #bcf16b12; }
+.workspace {
+  display: grid; grid-template-columns: 280px minmax(340px,1fr) 312px;
+  gap: 20px; max-width: 1840px; min-height: calc(100vh - 76px); margin: auto;
+  padding: 20px 24px 28px; align-items: start;
+}
+.panel {
+  min-width: 0; padding: 21px 18px; background: var(--panel); border: 1px solid #303930;
+  border-radius: 15px; box-shadow: 0 8px 30px #00000018, inset 0 1px 0 #ffffff05;
+}
+.section-title { display: flex; align-items: center; gap: 10px; margin-bottom: 22px; }
+.section-title&gt;span { font-size: .75rem; color: var(--accent); border: 1px solid #596a42; border-radius: 6px; padding: 4px 6px; }
+h1, .section-title h2 { font-size: 1.0625rem; font-weight: 650; letter-spacing: -.025em; }
+section h2, h3 { font-size: .9375rem; font-weight: 600; margin-bottom: 13px; color: #e2eadb; }
+.controls section+section { border-top: 1px solid #343e33; margin-top: 20px; padding-top: 19px; }
+label { display: block; font-size: .875rem; color: #c7d0c1; margin: 12px 0 8px; }
+.upload-zone {
+  display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 17px 8px;
+  margin: 0 0 12px; border: 1px dashed #617050; border-radius: 11px;
+  background: linear-gradient(150deg,#25312080,#18231b55); cursor: pointer;
+  transition: background .16s, border-color .16s;
+}
+.upload-zone:hover { background: #253324; border-color: var(--accent); }
+.upload-zone strong { font-size: .875rem; font-weight: 600; }
+.upload-zone span:last-child { font-size: .75rem; color: #b5c1ac; }
+.upload-icon { width: 27px; height: 27px; display: grid; place-items: center; font-size: 1.25rem; color: var(--accent); border-radius: 7px; background: #d5f59a10; }
+.inline { display: flex; gap: 8px; align-items: center; justify-content: space-between; }
+.inline&gt;button { flex: 1; }
+.inline&gt;label { flex: 1; margin: 12px 0 8px; }
+.muted, .empty { color: var(--muted); font-size: .8125rem; line-height: 1.65; margin-top: 11px; }
+input[type=text], select, textarea {
+  width: 100%; padding: 11px; border: 1px solid #3b4839; border-radius: 9px;
+  background: var(--field); color: var(--text); font-size: .875rem;
+  transition: border-color .16s, background .16s;
+}
+input[type=text]:hover, select:hover, textarea:hover { border-color: #5e6e53; }
+textarea { resize: vertical; min-height: 90px; line-height: 1.65; }
+input[type=color] { height: 34px; width: 43px; border: 1px solid #4a5840; background: #10150e; border-radius: 7px; padding: 4px; cursor: pointer; }
+input[type=range] { width: 100%; accent-color: var(--accent); }
+output { color: var(--accent); float: right; font-variant-numeric: tabular-nums; }
+.check { display: flex; align-items: center; gap: 8px; }
+.check input { accent-color: var(--accent); width: 15px; height: 15px; margin: 0; }
+.file-input { position: absolute; width: 1px; height: 1px; opacity: 0; }
+.stage { min-width: 0; padding: 4px 0 0; display: flex; flex-direction: column; }
+.stage-toolbar { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 0 2px; }
+.eyebrow { font-size: .75rem; letter-spacing: .13em; color: #b5c4a7; }
+.stage-toolbar h2 { font-size: 1.25rem; font-weight: 600; letter-spacing: -.03em; margin: 5px 0 0; }
+.ratios { display: flex; gap: 3px; padding: 4px; background: #1b231c; border: 1px solid #3e4a36; border-radius: 10px; }
+.ratios button { border: 0; background: transparent; min-height: 32px; padding: 6px 13px; font-variant-numeric: tabular-nums; }
+.ratios button[aria-pressed=true] { background: #e3ebd7; color: #1a2315; box-shadow: 0 1px 5px #0003; }
+.canvas-wrap {
+  position: relative; display: flex; justify-content: center; align-items: center;
+  margin: 18px 0 12px; padding: 18px 16px; height: calc(100vh - 392px); min-height: 310px; max-height: 740px;
+  border: 1px solid #303c2c; border-radius: 15px; overflow: hidden;
+  background-color: #121810;
+  background-image: linear-gradient(#a3bc6e09 1px, transparent 1px),linear-gradient(90deg,#a3bc6e09 1px, transparent 1px),radial-gradient(ellipse at 50% 45%,#35432b55,transparent 75%);
+  background-size: 28px 28px,28px 28px,100% 100%;
+  box-shadow: inset 0 1px 0 #ffffff04;
+}
+canvas { display: block; max-width: 100%; max-height: 100%; width: auto; height: auto; background: #171922; }
+.canvas-wrap canvas { border-radius: 3px; box-shadow: 0 22px 42px #0008,0 0 0 1px #ffffff16; }
+.stage-tools { display: flex; align-items: center; justify-content: space-between; gap: 10px; color: #b0bea2; font-size: .8125rem; }
+.stage-tools button { background: transparent; min-height: 30px; font-size: .8125rem; padding: 4px 9px; }
+.stage-tools button[aria-pressed=true] { color: var(--accent); border-color: var(--accent); }
+.canvas-meta { display: flex; justify-content: space-between; gap: 12px; margin-top: 8px; color: #a9b4a2; font-size: .75rem; line-height: 1.6; font-variant-numeric: tabular-nums; }
+#textSelection { position: absolute; border: 1px solid #d5f59a99; outline: 0; cursor: grab; touch-action: none; border-radius: 4px; opacity: 0; transition: opacity .18s,box-shadow .18s; max-width: 100%; }
+#textSelection:hover, #textSelection:focus-visible, #textSelection.dragging { opacity: 1; box-shadow: 0 0 0 3px #d5f59a18; }
+#textSelection:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+#textSelection.dragging { cursor: grabbing; }
+.selection-handle { position: absolute; left: 50%; top: -4px; width: 8px; height: 8px; background: var(--accent); border: 1px solid #1a230b; border-radius: 50%; }
+#textSelection[hidden] { display: none; }
+.effects-panel { margin-top: 19px; padding: 17px; border: 1px solid #3e4b37; border-radius: 14px; background: linear-gradient(115deg,#1e291c,#172018); box-shadow: inset 0 1px 0 #ffffff07; }
+.effects-heading { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.effects-heading h3 { margin: 5px 0 13px; font-size: 1rem; }
+.effects-heading button { min-height: 32px; padding: 5px 15px; background: #2b3825; }
+.effect-choices { display: flex; gap: 6px; flex-wrap: wrap; padding: 4px; border-radius: 10px; background: #101810; border: 1px solid #34462c; }
+.effect-choices button { flex: 1; background: transparent; border-color: transparent; min-height: 33px; padding: 6px 8px; font-size: .875rem; }
+.effect-choices button[aria-pressed=true] { background: #d5f59a; border-color: #d5f59a; color: #18220d; }
+.motion-footer { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-top: 8px; }
+.motion-footer .check { margin: 8px 0; font-size: .875rem; }
+.motion-footer button { min-height: 34px; padding: 6px 10px; font-size: .875rem; background: #263722; border-color: #61714d; }
+.effects-panel .muted { margin-top: 4px; font-size: .75rem; }
+#notice { margin-top: 14px; padding: 12px 2px 0; border-top: 1px solid #34402e; color: #c7d5b8; font-size: .875rem; line-height: 1.65; }
+#notice[data-error=true] { color: #ffc3bc; }
+.preset-section { padding-bottom: 18px; border-bottom: 1px solid #3c4735; margin-bottom: 18px; }
+.preset-section h3 { margin: 5px 0 15px; font-size: 1rem; letter-spacing: -.02em; }
+.preset-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.preset-grid button { min-width: 0; padding: 8px; text-align: left; border-radius: 11px; background: #1c241d; border-color: #3d4835; }
+.preset-grid button:hover { background: #263123; border-color: #99ae73; }
+.preset-grid button[aria-pressed=true] { background: #2b3923; border-color: #c2e48d; box-shadow: 0 0 0 1px #c2e48d18; }
+.preset-grid strong { display: block; font-size: .875rem; margin-top: 9px; font-weight: 600; }
+.preset-grid small { display: block; color: #b4c0aa; font-size: .75rem; margin-top: 4px; font-weight: 400; }
+.preset-art { display: block; height: 64px; border-radius: 6px; background: linear-gradient(140deg,#91f994,#2756af 60%,#141329); position: relative; overflow: hidden; }
+.preset-art:after { content: &#x27;&#x27;; display: block; position: absolute; left: 11%; right: 11%; height: 1px; top: 30%; background: #ffffff80; box-shadow: 0 8px 0 #ffffff80,0 16px 0 #ffffff80; }
+.preset-art.film { background: linear-gradient(145deg,#5e3941,#dd986c 65%,#efd4a6); }
+.preset-art.mono { background: linear-gradient(145deg,#181a1e,#535965 55%,#d3d9dc); }
+.preset-art.editorial { background: #1d3b43; border: 3px solid #bbd7ca; }
+.preset-art.editorial:after { left: 14%; right: 32%; top: 25%; }
+#resetStyle { background: transparent; border: 0; color: #becbb3; min-height: 30px; font-size: .8125rem; padding: 5px 0; margin-top: 9px; }
+#createTemplate.primary { background: #2b3b23; border-color: #6d8050; color: #e3efcf; }
+#createTemplate.primary:hover { background: #3b512e; border-color: #c2db98; }
+.template-list { margin-top: 19px; display: flex; flex-direction: column; gap: 10px; }
+.empty { padding: 23px 12px; border: 1px dashed #3b4834; border-radius: 10px; text-align: center; background: #10180f; }
+.template-row { display: grid; grid-template-columns: 64px 1fr; gap: 10px; padding: 10px; border: 1px solid #3d4835; border-radius: 11px; background: #1c241b; }
+.template-row.selected { border-color: var(--accent); }
+.template-row img { width: 64px; height: 76px; object-fit: cover; border-radius: 5px; }
+.template-row strong { display: block; font-size: .875rem; overflow-wrap: anywhere; }
+.template-row small { color: var(--muted); font-size: .75rem; }
+.template-actions { display: flex; gap: 6px; margin-top: 9px; }
+.template-actions button { font-size: .8125rem; min-height: 30px; padding: 5px 8px; }
+.transfer { border-top: 1px solid #3c4735; margin-top: 22px; padding-top: 19px; }
+.transfer button, .file-button { display: block; width: 100%; text-align: center; margin-top: 9px; background: #1d291b; }
+.subtle-link { color: #c4d2b5; font-size: .8125rem; display: inline-block; margin-top: 20px; text-underline-offset: 4px; }
+body.focus-mode .workspace { grid-template-columns: minmax(0,1fr); max-width: 1180px; }
+body.focus-mode .controls, body.focus-mode .templates { display: none; }
+body.focus-mode .canvas-wrap { height: calc(100vh - 385px); max-height: 900px; }
+body:has(#download:disabled) .file-button, body:has(#download:disabled) .upload-zone { pointer-events: none; opacity: .5; }
+@media(min-width:1600px) {
+  .workspace { grid-template-columns: 302px minmax(340px,1fr) 340px; gap: 30px; padding: 26px 32px; }
+  .panel { padding: 25px 22px; }
+  .canvas-wrap { height: calc(100vh - 392px); }
+  .preset-art { height: 78px; }
+}
+@media(max-width:1120px) {
+  .workspace { grid-template-columns: 260px minmax(300px,1fr); gap: 18px; padding: 18px; }
+  .templates { grid-column: 1/-1; }
+  .templates .preset-grid { grid-template-columns: repeat(4,1fr); }
+  .template-list { display: grid; grid-template-columns: repeat(auto-fit,minmax(220px,1fr)); }
+  .top-label { display: none; }
+  .topbar { gap: 12px; padding: 16px 20px; }
+  .draft-status { font-size: .75rem; }
+}
+@media(max-width:650px) {
+  .topbar { flex-wrap: wrap; gap: 10px; padding: 16px; }
+  .brand { font-size: 1.0625rem; }
+  .draft-status { margin-left: auto; max-width: 160px; }
+  .history-tools { order: 3; flex: 1 0 auto; }
+  .topbar .primary { order: 4; }
+  .workspace { display: flex; flex-direction: column; padding: 14px; gap: 20px; }
+  .panel, .stage { width: 100%; }
+  .panel { padding: 20px; }
+  .canvas-wrap { height: 420px; min-height: 290px; padding: 20px 12px; }
+  .ratios button { padding: 6px 9px; }
+  .stage-tools, .motion-footer { flex-wrap: wrap; }
+  .motion-footer button { width: 100%; }
+  .effect-choices button { min-width: 65px; }
+  .templates .preset-grid { grid-template-columns: 1fr 1fr; }
+  .preset-art { height: 80px; }
+  .template-list { display: flex; }
+  .canvas-meta { flex-direction: column; gap: 2px; }
+  body.focus-mode .workspace { display: block; }
+  body.focus-mode .canvas-wrap { height: 440px; min-height: 300px; }
+}
+@media(prefers-reduced-motion:reduce) {
+  *, *::before, *::after { transition: none!important; animation: none!important; scroll-behavior: auto!important; }
+}
+@media(min-width:651px) and (max-width:1599px) {
+  .controls { padding-top:18px; }
+  .controls .section-title { margin-bottom:18px; }
+  .controls section h2 { margin-bottom:10px; }
+  .controls .upload-zone { padding:11px 8px; gap:6px; }
+  .controls .inline&gt;button { min-height:36px; padding:7px 10px; }
+  .controls label { margin-top:9px; margin-bottom:6px; }
+  .controls .upload-zone { margin-top:0; }
+  .controls .muted { margin-top:8px; }
+  .controls select { padding:9px 10px; }
+  .controls section+section { margin-top:16px; padding-top:15px; }
+  .controls textarea { min-height:80px; height:86px; padding:9px; }
+}
+</code></pre></details><details><summary>guide.html</summary><pre><code>&lt;!doctype html&gt;&lt;html lang=&quot;ko&quot;&gt;&lt;head&gt;&lt;meta charset=&quot;utf-8&quot;&gt;&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width,initial-scale=1&quot;&gt;&lt;title&gt;사용 안내와 실제 검사 — FRAME LAB&lt;/title&gt;&lt;link rel=&quot;stylesheet&quot; href=&quot;docs.css&quot;&gt;&lt;/head&gt;&lt;body&gt;&lt;nav&gt;&lt;a href=&quot;index.html&quot;&gt;← 편집기로 돌아가기&lt;/a&gt;&lt;a href=&quot;source.html&quot;&gt;공개 소스&lt;/a&gt;&lt;/nav&gt;&lt;p class=&quot;tag&quot;&gt;FRAME LAB / FIELD NOTES&lt;/p&gt;&lt;h1&gt;만드는 과정까지 남기는 카드 스튜디오&lt;/h1&gt;&lt;p&gt;이미지 한 장과 문구 한 줄을 편집하고, 미리보기와 같은 PNG로 저장합니다.&lt;/p&gt;
+&lt;h2&gt;사용 방법&lt;/h2&gt;&lt;ol&gt;&lt;li&gt;사용 권한이 있는 PNG·JPEG를 불러옵니다. 샘플 이미지는 자유롭게 사용할 수 있습니다.&lt;/li&gt;&lt;li&gt;문구·크기·색·위치·화면비를 조정합니다. 긴 문구는 자동 줄바꿈·축소하며 실제 적용 크기를 표시합니다.&lt;/li&gt;&lt;li&gt;PNG 내려받기로 저장합니다. 계속 사용할 카드는 이름을 붙여 템플릿으로 저장하세요.&lt;/li&gt;&lt;/ol&gt;
+&lt;h2&gt;직접 편집과 효과&lt;/h2&gt;&lt;p&gt;문구를 끌어 옮기거나 Tab으로 선택한 뒤 방향키로 조정하세요. Shift 방향키는 크게 이동합니다. 네온·필름·미니멀·매거진 프리셋은 이미지와 문구를 유지합니다. 집중 모드에서는 캔버스를 크게 보고, Escape로 패널을 다시 표시합니다.&lt;/p&gt;&lt;p&gt;페이드·슬라이드·타이핑·줌은 3초 동안 미리 볼 수 있습니다. PNG는 효과가 끝난 완성 장면을 저장하고, 영상 버튼은 약 3초 WebM 파일을 생성합니다. MP4·GIF는 제공하지 않습니다. 움직임 줄이기를 켜면 재생이 즉시 멈춥니다. WebM 저장 미지원 브라우저에서는 버튼이 비활성화됩니다.&lt;/p&gt;&lt;h2&gt;템플릿과 안전한 가져오기&lt;/h2&gt;&lt;p&gt;같은 브라우저에 최대 24개, 이미지와 설정 전체 32MB까지 저장합니다. 선택한 카드의 수정은 같은 ID에 반영됩니다. 최근 삭제는 취소할 수 있습니다. JSON은 다른 기기에서 옮겨 쓸 수 있고, 전체 검증을 통과한 뒤에만 저장합니다.&lt;/p&gt;&lt;p&gt;작성 중인 카드는 이 브라우저에 자동 저장되고 새로고침 뒤 복구됩니다. 새 카드로 다시 시작할 수 있고 실행 취소로 이전 작업에 돌아갈 수 있습니다. 저장 공간이 부족하면 자동 저장 불가를 표시합니다. 브라우저 데이터 삭제·시크릿 창 종료로 템플릿이 없어질 수 있으므로 중요한 작업은 PNG와 JSON으로 보관하세요. 편집기는 불러온 파일을 별도 서버에 업로드하지 않습니다.&lt;/p&gt;
+&lt;h2&gt;완성 이미지 3개&lt;/h2&gt;&lt;div class=&quot;cards&quot;&gt;&lt;article&gt;&lt;a href=&quot;evidence/finished-square.png&quot; download&gt;&lt;img src=&quot;evidence/finished-square.png&quot; alt=&quot;작은 발견을 오래 바라보기 · 정사각 카드&quot; loading=&quot;lazy&quot;&gt;발견 · 1:1 PNG&lt;/a&gt;&lt;/article&gt;&lt;article&gt;&lt;a href=&quot;evidence/finished-portrait.png&quot; download&gt;&lt;img src=&quot;evidence/finished-portrait.png&quot; alt=&quot;지금의 한 걸음이 내일의 방향이 된다 · 세로 카드&quot; loading=&quot;lazy&quot;&gt;방향 · 4:5 PNG&lt;/a&gt;&lt;/article&gt;&lt;article&gt;&lt;a href=&quot;evidence/finished-story.png&quot; download&gt;&lt;img src=&quot;evidence/finished-story.png&quot; alt=&quot;새로운 시선 새로운 시작 · 스토리 카드&quot; loading=&quot;lazy&quot;&gt;시작 · 9:16 PNG&lt;/a&gt;&lt;/article&gt;&lt;/div&gt;&lt;p&gt;3개 모두 프로젝트 내부 제작 · AI의 코드 구현 지원으로 추상 Canvas 그래픽과 문구를 제작했습니다. 외부 원본·사진 없이 만든 합성 이미지이며, 학생이 직접 그린 작품이라고 주장하지 않습니다. MIT로 제공하며 위치 메타데이터는 없습니다.&lt;/p&gt;
+&lt;h2&gt;실제 결함 수정&lt;/h2&gt;&lt;p&gt;동일한 긴 한글 문구를 사용했습니다. 수정 전 한 줄 폭은 41,886.09375px인데 사용 가능한 폭은 936px여서 잘렸습니다. 수정 후에는 33px·20줄로 자동 조정되어 안전 영역 안에 들어왔습니다. 아래 기록은 실제 브라우저 실행에서 수집했습니다.&lt;/p&gt;
+&lt;h2&gt;과제 기준 대조&lt;/h2&gt;&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;기준&lt;/th&gt;&lt;th&gt;검사 내용&lt;/th&gt;&lt;th&gt;확인 결과&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;T03-C01&lt;/td&gt;&lt;td&gt;공개 결과물·소스&lt;/td&gt;&lt;td id=&quot;public-status&quot;&gt;기존 Sites 주소는 사용자가 새 시크릿 창의 무로그인 열림을 확인했습니다. GitHub Pages 주소는 이전 배포 후 다시 확인합니다.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;T03-C03&lt;/td&gt;&lt;td&gt;첫 화면 이미지·문구 도구&lt;/td&gt;&lt;td&gt;1366×768 / 1920×1080에서 보임&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;T03-C04~C05&lt;/td&gt;&lt;td&gt;PNG·JPEG 불러오기&lt;/td&gt;&lt;td&gt;세로 PNG·가로 JPEG 정상 처리&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;T03-C06~C08&lt;/td&gt;&lt;td&gt;위치·크기·색 즉시 반영&lt;/td&gt;&lt;td&gt;실제 input 이벤트와 문구 영역의 RGB 픽셀 대조&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;T03-C09~C10&lt;/td&gt;&lt;td&gt;지원하지 않는 파일 거부&lt;/td&gt;&lt;td&gt;화면 거부 이유·기존 편집 보존&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;T03-C11~C13&lt;/td&gt;&lt;td&gt;세 비율 화면·PNG 일치&lt;/td&gt;&lt;td&gt;전체 픽셀 채널 차이 0건&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;T03-C14&lt;/td&gt;&lt;td&gt;극단 입력 12건&lt;/td&gt;&lt;td&gt;12건 PASS&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;T03-C15&lt;/td&gt;&lt;td&gt;실제 결함 수정 전후&lt;/td&gt;&lt;td&gt;동일 긴 한글 입력 FAIL → PASS&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;T03-C16&lt;/td&gt;&lt;td&gt;잘못된 입력 후 보존&lt;/td&gt;&lt;td&gt;위장·손상·용량 초과·과도한 줄바꿈 거부 후 보존&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;T03-C17~C21&lt;/td&gt;&lt;td&gt;템플릿 3개 CRUD·새로고침&lt;/td&gt;&lt;td&gt;안정 ID로 생성·불러오기·수정·삭제·유지&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;T03-C22~C24&lt;/td&gt;&lt;td&gt;JSON 복원·거부&lt;/td&gt;&lt;td&gt;정상 복원 / 손상·필수 누락 전체 검증 후 거부&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;T03-C25~C26&lt;/td&gt;&lt;td&gt;완성 이미지 3개&lt;/td&gt;&lt;td&gt;3가지 비율·문구·정상 디코딩·파일 다시 열기&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;T03-C27&lt;/td&gt;&lt;td&gt;이미지 사용 권한&lt;/td&gt;&lt;td&gt;프로젝트 내부 제작 · AI 지원 명시&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;T03-C28&lt;/td&gt;&lt;td&gt;위치 메타데이터&lt;/td&gt;&lt;td&gt;공개 이미지 GPS 0건 · 파일 메타데이터 검사&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;T03-C29~C30&lt;/td&gt;&lt;td&gt;개인정보·비밀값&lt;/td&gt;&lt;td id=&quot;safety-status&quot;&gt;정적 배포 파일 검색·기본 화면 확인: 개인정보·비밀값 0건&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;T03-C31~C32&lt;/td&gt;&lt;td&gt;확인법 4줄·판단 3줄&lt;/td&gt;&lt;td&gt;제출문에 구분하여 제공&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;h2&gt;클릭이 멈추던 문제의 복구&lt;/h2&gt;&lt;p&gt;이전 버전 탭이 저장소 연결을 유지하여 업그레이드가 대기하면 버튼 등록까지 멈추던 실제 문제를 재현했습니다. 편집 기능을 먼저 준비하고 저장소는 별도로 연결하도록 수정했습니다. 기존 템플릿과 자동 복구 기록을 보존하며, 연결이 막혀도 편집·PNG·영상 저장은 사용할 수 있습니다. 저장소 연결 지연이 표시되면 이전 탭을 새로고침하고 저장소 다시 연결을 누르세요.&lt;/p&gt;&lt;p&gt;빠르게 이어 누른 효과 선택을 무시하던 문제는 순서대로 처리하도록 고쳤습니다. 자동 복구 시 JPEG를 반복 압축하던 문제도 정리했습니다. 마우스·Enter·Space·Escape 조작과 실제 PNG·JSON·WebM 생성, 저장소 재연결을 검사했습니다.&lt;/p&gt;&lt;ul&gt;&lt;li&gt;&lt;a href=&quot;evidence/interaction/public-before.json&quot;&gt;공개 화면에서 확인한 수정 전 문제&lt;/a&gt;&lt;/li&gt;&lt;li&gt;&lt;a href=&quot;evidence/interaction/button-startup-results.json&quot;&gt;실제 수정 전 FAIL 재현과 수정 후 클릭 검사 39건&lt;/a&gt;&lt;/li&gt;&lt;li&gt;&lt;a href=&quot;evidence/interaction/native-ui-checks.json&quot;&gt;마우스·키보드 실제 조작 확인&lt;/a&gt;&lt;/li&gt;&lt;li&gt;&lt;a href=&quot;evidence/interaction/button-screen.jpg&quot;&gt;수정 후 실제 편집 화면&lt;/a&gt;&lt;/li&gt;&lt;li&gt;&lt;a href=&quot;evidence/interaction/button-proof.png&quot; download&gt;실제 생성 PNG&lt;/a&gt; · &lt;a href=&quot;evidence/interaction/button-proof.webm&quot; download&gt;실제 생성 WebM&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;최종 수정본에서 클릭·저장소 검사 39건과 기존 편집 기능 재검사 52건이 통과했습니다. 자동 복구는 같은 설정과 최종 PNG 바이트가 일치하는지 대조했습니다.&lt;/p&gt;&lt;p&gt;&lt;a href=&quot;evidence/interaction/regression-all.json&quot;&gt;최종 기능 재검사 52건 원본&lt;/a&gt; · &lt;a href=&quot;evidence/interaction/regression-before.json&quot;&gt;복구 수정 전 FAIL 원본&lt;/a&gt; · &lt;a href=&quot;evidence/interaction/safety-check.json&quot;&gt;공개 파일 점검&lt;/a&gt;&lt;/p&gt;&lt;h2&gt;화면 디자인 정리&lt;/h2&gt;&lt;p&gt;2026-10-05: 해당 디자인 정리 단계에서는 편집기 HTML과 동작 코드를 유지하고 CSS를 정리했습니다. 이후 클릭 복구 단계에서 동작 코드를 수정했습니다. 두 기준 화면에서 이미지 불러오기·문구 입력·미리보기가 첫 화면에 보이고, 모바일을 포함한 세 크기에서 가로 넘침이 0px입니다. 기존 52건의 기능 검사 기록은 변경 전 Studio 기능에 대한 실제 기록입니다.&lt;/p&gt;&lt;p&gt;&lt;a href=&quot;evidence/studio/polish-layout.json&quot;&gt;이번 화면 배치 확인 원본&lt;/a&gt; · &lt;a href=&quot;evidence/studio/polish-screen.jpg&quot;&gt;실제 편집 화면 캡처&lt;/a&gt;&lt;/p&gt;&lt;h2&gt;Studio 기능 재검사&lt;/h2&gt;&lt;p&gt;새 기능 18건, 기존 극단 입력 12건, 비율 3건, 템플릿·JSON 9건, 화면 3건, 기본 편집·안전 7건을 실제 브라우저에서 실행했습니다. 새 기능에는 이동·취소·다시 실행·경계 제한·자동 복구·기존 JSON 호환·움직임 줄이기·WebM 4개 디코딩을 포함합니다.&lt;/p&gt;&lt;ul&gt;&lt;li&gt;&lt;a href=&quot;evidence/studio/studio-checks.json&quot;&gt;새 기능 18건&lt;/a&gt;&lt;/li&gt;&lt;li&gt;&lt;a href=&quot;evidence/studio/extreme-inputs.json&quot;&gt;극단 입력 재검사&lt;/a&gt;&lt;/li&gt;&lt;li&gt;&lt;a href=&quot;evidence/studio/ratio-comparison.json&quot;&gt;세 비율 픽셀 재검사&lt;/a&gt;&lt;/li&gt;&lt;li&gt;&lt;a href=&quot;evidence/studio/template-json.json&quot;&gt;템플릿·JSON 재검사&lt;/a&gt;&lt;/li&gt;&lt;li&gt;&lt;a href=&quot;evidence/studio/screen-checks.json&quot;&gt;화면 경계 재검사&lt;/a&gt;&lt;/li&gt;&lt;li&gt;&lt;a href=&quot;evidence/studio/basic-safety.json&quot;&gt;기본 편집·안전 재검사&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;&lt;details&gt;&lt;summary&gt;실제 생성한 영상 효과 4개&lt;/summary&gt;&lt;video controls preload=&quot;metadata&quot; style=&quot;width:100%;max-width:420px&quot; src=&quot;evidence/studio/motion-fade.webm&quot;&gt;&lt;/video&gt;&lt;p&gt;&lt;a href=&quot;evidence/studio/motion-fade.webm&quot; download&gt;페이드&lt;/a&gt; · &lt;a href=&quot;evidence/studio/motion-slide.webm&quot; download&gt;슬라이드&lt;/a&gt; · &lt;a href=&quot;evidence/studio/motion-typewriter.webm&quot; download&gt;타이핑&lt;/a&gt; · &lt;a href=&quot;evidence/studio/motion-zoom.webm&quot; download&gt;줌&lt;/a&gt;&lt;/p&gt;&lt;/details&gt;&lt;h2&gt;초기 버전 검사 원본&lt;/h2&gt;&lt;ul&gt;&lt;li&gt;&lt;a href=&quot;evidence/extreme-inputs.json&quot;&gt;극단 입력 12건&lt;/a&gt;&lt;/li&gt;&lt;li&gt;&lt;a href=&quot;evidence/ratio-comparison.json&quot;&gt;세 화면비 전체 픽셀 대조&lt;/a&gt;&lt;/li&gt;&lt;li&gt;&lt;a href=&quot;evidence/template-json.json&quot;&gt;템플릿 CRUD와 JSON 복원&lt;/a&gt;&lt;/li&gt;&lt;li&gt;&lt;a href=&quot;evidence/basic-safety.json&quot;&gt;기본 편집·투명도·잘못된 파일&lt;/a&gt;&lt;/li&gt;&lt;li&gt;&lt;a href=&quot;evidence/screen-checks.json&quot;&gt;두 기준 해상도와 모바일&lt;/a&gt;&lt;/li&gt;&lt;li&gt;&lt;a href=&quot;evidence/before-long-korean.json&quot;&gt;실제 결함 수정 전 FAIL&lt;/a&gt; / &lt;a href=&quot;evidence/before-long-korean.png&quot;&gt;수정 전 이미지&lt;/a&gt; / &lt;a href=&quot;evidence/after-long-korean.png&quot;&gt;같은 입력 수정 후 이미지&lt;/a&gt;&lt;/li&gt;&lt;li&gt;&lt;a href=&quot;evidence/metadata-check.json&quot;&gt;실제 파일 열기와 메타데이터&lt;/a&gt;&lt;/li&gt;&lt;li&gt;&lt;a href=&quot;evidence/provenance.json&quot;&gt;이미지 제작·권리 기록&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;테스트 입력은 개인정보 없는 합성 도형입니다. 로컬에서 합성 GPS를 삽입한 JPEG로 제거 여부를 확인했습니다. GPS가 있는 원본 테스트 파일은 공개하지 않습니다.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
+</code></pre></details><details><summary>docs.css</summary><pre><code>body{max-width:1120px;margin:0 auto;padding:40px 24px;font:16px/1.75 &quot;Segoe UI&quot;,&quot;Malgun Gothic&quot;,sans-serif;background:#0d100f;color:#f2f5f0}a{color:#d5f59a;text-underline-offset:4px}h1{font-size:2.25rem;font-weight:600;letter-spacing:-.04em;line-height:1.3}h2{margin-top:44px;font-weight:600}p{color:#c3cebd}.tag{color:#c1d6a6;font-size:13px;letter-spacing:.15em}.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}.cards img{width:100%;display:block;border-radius:10px}.cards a{display:block}table{border-collapse:collapse;width:100%;font-size:14px}th,td{text-align:left;padding:14px 12px;border-bottom:1px solid #354331;vertical-align:top}th{color:#dce8ce;background:#1c261a}pre{background:#10170f;padding:20px;white-space:pre-wrap;overflow-wrap:anywhere;border-radius:8px}details{background:#182016;border:1px solid #35432d;padding:16px;margin:12px 0;border-radius:12px}summary{cursor:pointer;color:#e0ebd5}nav{display:flex;flex-wrap:wrap;gap:22px;padding-bottom:22px;border-bottom:1px solid #35432d}a:focus-visible,summary:focus-visible{outline:3px solid #d5f59a;outline-offset:4px}@media(max-width:650px){.cards{grid-template-columns:1fr}body{padding:25px 18px}h1{font-size:1.875rem}table{font-size:13px}th,td{padding:9px}}
+</code></pre></details><details><summary>README.md</summary><pre><code># FRAME LAB — 짤·카드 스튜디오
+
+공개 편집기: https://h0p2.github.io/frame-lab-card-studio/
+
+GitHub 소스: https://github.com/H0P2/frame-lab-card-studio
+
+HTML 소스 보기: https://h0p2.github.io/frame-lab-card-studio/source.html
+
+과제 3 결과물. HTML/CSS/JavaScript, Canvas, IndexedDB로 구현했으며 외부 라이브러리를 사용하지 않습니다.
+
+## 실행
+
+이 디렉터리를 정적 HTTP 서버로 제공한 뒤 index.html을 여세요. 파일 더블클릭 실행은 모듈 또는 브라우저 저장소 제한이 있을 수 있습니다.
+
+## 기능과 한도
+
+- PNG/JPEG 실제 파일 서명 검증. 최대 8MB·2천만 픽셀. 긴 변을 최대 2400px로 정리합니다.
+- Canvas 재인코딩으로 원본의 EXIF·위치 메타데이터를 제거합니다.
+- 문구 최대 2,000자. 한글·영문·줄바꿈·복합 이모지를 처리합니다.
+- 요청 크기 20~160px. 넘치면 자동 줄바꿈과 최소 12px까지 축소합니다. 수용 불가 입력은 거부하고 기존 작업을 유지합니다.
+- 1:1(1080×1080), 4:5(1080×1350), 9:16(1080×1920). 미리보기 Canvas를 PNG로 직접 저장합니다.
+- 사용자 템플릿 생성·불러오기·수정·삭제·최근 삭제 취소. 이미지와 설정을 IndexedDB에 보관합니다.
+- 최대 24개, 전체 JSON 32MB 이내. 정상 JSON은 안정 ID로 병합합니다. 전체 검증 실패 시 저장하지 않습니다.
+- 작성 중인 카드는 변경 후 400ms 동안 입력이 멈추면 IndexedDB에 자동 저장되고 새로고침 뒤 복구됩니다. 저장 공간이 부족하면 화면에 알립니다. 템플릿도 유지됩니다. 기기를 바꾸면 JSON으로 옮기세요.
+- 문구를 직접 드래그하거나 방향키로 이동합니다. Shift 방향키는 20px, 기본은 4px입니다. 카드 안전 영역으로 제한됩니다.
+- 실행 취소·다시 실행 최대 40단계, 연속 입력은 묶음 처리합니다. 새 카드도 실행 취소할 수 있습니다.
+- 네온·필름·미니멀·매거진 프리셋. 이미지·문구를 보존하고 필터와 배치를 적용합니다.
+- 페이드·슬라이드·타이핑·줌 미리보기와 약 3초 WebM 영상 저장. PNG는 움직임이 끝난 완성 장면을 저장합니다. MP4/GIF 저장은 제공하지 않습니다.
+- 움직임 줄이기는 즉시 재생을 멈추고 영상 저장을 비활성화합니다. 운영체제 설정도 반영합니다.
+- 영상 생성 중 편집을 잠그고, 다른 화면으로 이동하면 생성 취소를 알립니다. WebM 미지원 브라우저는 PNG와 미리보기를 사용합니다.
+- 기존 템플릿 JSON은 새 항목 없이도 불러옵니다. 템플릿 저장소는 기존 버전 그대로 연결하며 자동 복구는 별도 저장소를 사용합니다. 이전 버전의 자동 복구 데이터도 이관합니다.
+- 편집기는 불러온 이미지 파일을 별도 서버로 업로드하지 않습니다. 브라우저 데이터 삭제 또는 시크릿 창 종료 시 로컬 기록이 사라질 수 있습니다.
+
+## 실제 검사
+
+evidence 폴더에 실제 브라우저 실행 결과와 내려받은 파일을 보관했습니다. 개인정보 없는 합성 입력을 사용했습니다.
+
+수정 전 긴 한글 한 줄 폭 41886.09375px &gt; 사용 폭 936px로 FAIL. 동일 문구에 자동 줄바꿈·크기 보정을 적용하여 33px·20줄로 PASS.
+
+세 화면비에서 미리보기와 PNG 디코딩 결과의 전체 픽셀 채널을 대조했습니다. 템플릿 CRUD·새로고침 유지·잘못된 JSON 거부도 실제 IndexedDB에서 실행했습니다.
+
+## 제작·권리
+
+본 프로젝트 내부에서 AI의 코드 구현 지원으로 제작한 추상 Canvas 그래픽과 문구입니다. 외부 사진·캐릭터·상표를 사용하지 않았습니다. 학생이 직접 그렸다고 주장하지 않습니다. 제작물은 MIT로 제공합니다.
+
+## Studio 추가 검사
+
+evidence/studio에 새 기능 18건과 기존 극단 입력·비율·템플릿·화면·편집 재검사 원본을 보관합니다. WebM 4개는 실제 MediaRecorder로 생성한 뒤 브라우저에서 디코딩했습니다. 드래그 검사는 실제 편집기의 PointerEvent 처리기를 실행했습니다. 키보드·프리셋 UI는 별도 브라우저 조작으로도 확인합니다. 색상 검사는 문구 영역의 실제 RGB 픽셀을 확인합니다.
+
+
+## 화면 디자인 정리 (2026-10-05)
+
+CSS로 작업 공간과 패널, 입력창, 버튼 위계를 정리했습니다. 이 CSS 정리 단계 당시 동작 HTML·JavaScript는 Studio 버전 2와 동일했습니다. 이후 아래 클릭 복구 단계에서 초기화와 저장소 연결 코드를 수정했습니다. 실제 화면 배치 확인과 캡처는 evidence/studio/polish-layout.json 및 polish-screen 파일에 있습니다. 기존 기능 검사 52건을 다시 실행한 것으로 표현하지 않습니다. 공개 결과물·소스 두 주소의 무로그인 확인은 사용자가 보고했습니다.
+
+## 클릭·초기화 복구
+
+이전 버전 탭이 IndexedDB 연결을 유지하면 저장소 버전 업그레이드가 대기하면서 핵심 이벤트 등록까지 멈추던 실제 결함을 재현했습니다. 편집 이벤트를 먼저 등록하고 저장소 연결을 별도로 실행합니다. 템플릿은 기존 저장소를 유지하고 자동 복구는 별도 저장소를 사용합니다. 연결 지연 시 편집·PNG·영상은 계속 사용할 수 있고 연결 복구 버튼을 제공합니다. 연결 도중 입력한 문구를 늦게 복구된 카드가 덮어쓰지 않도록 검사합니다.
+
+빠른 버튼 클릭을 버리지 않고 순서대로 처리합니다. 자동 복구 시 PNG/JPEG 형식과 크기를 검사하고 위치 정보를 담을 수 있는 메타데이터를 제거하면서 압축된 이미지 픽셀을 다시 압축하지 않습니다. JSON에서 가져온 이미지는 별도로 안전하게 재인코딩합니다.
+
+실제 클릭 검사 39건 및 별도의 마우스·Enter·Space·Escape 검사 기록은 evidence/interaction에 있습니다. 검사 입력은 개인정보 없는 합성 자료입니다. 자동 검사 입력의 방식과 다운로드 관찰 방식은 원본 기록에 명시했습니다.
+
+최종 수정본에서 기존 편집·출력·템플릿·화면·Studio 기능 52건을 다시 실행하여 통과했습니다. 원본은 evidence/interaction/regression-all.json에 있습니다. 자동 복구 검사에서는 설정과 최종 PNG 바이트가 동일했습니다.
+
+## GitHub Pages 배포
+
+main 브랜치의 루트 폴더를 게시합니다. `.nojekyll`로 정적 파일을 그대로 제공합니다. `package-source.py`는 공개 코드 보기·파일 해시·소스 ZIP을 다시 만듭니다. 다른 도메인의 브라우저 저장소는 공유되지 않으므로 기존 템플릿은 JSON 내보내기와 가져오기로 옮깁니다. 과거 검사 기록의 주소·시간·관찰 결과는 당시 값 그대로 보존했습니다.
+</code></pre></details><details><summary>LICENSE.txt</summary><pre><code>MIT License
+
+Copyright (c) 2026 FRAME LAB project contributors
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files, to deal in the Software without restriction, including rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies, provided this notice is included.
+
+THE SOFTWARE IS PROVIDED AS IS, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED.
+</code></pre></details><h2>검사 기록과 제작 권리</h2><p><a href="guide.html">과제 기준과 실제 검사 원본</a> · <a href="evidence/provenance.json">완성 이미지 제작·권리</a></p><p>MIT License · 프로젝트 내부 제작 · AI 구현 지원.</p></body></html>
