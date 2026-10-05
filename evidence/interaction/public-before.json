@@ -1,0 +1,13 @@
+{
+  "sourceVersion": 3,
+  "publicObservation": {
+    "status": "작업 준비 중",
+    "text": "",
+    "clickedEffect": "fade",
+    "effectAfterClick": "none",
+    "notice": "이미지와 문구를 바꾸면 바로 반영됩니다."
+  },
+  "expected": "fade selected and preview starts",
+  "result": "FAIL",
+  "rootCause": "Studio event binding awaited an IndexedDB v2 upgrade while a v1 tab held the old connection."
+}

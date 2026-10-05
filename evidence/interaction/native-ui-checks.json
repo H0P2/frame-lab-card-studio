@@ -1,0 +1,31 @@
+{
+  "method": "Native browser mouse and keyboard through the visible controls on the local editor. No injected input script.",
+  "results": [
+    {
+      "action": "Fade mouse click",
+      "result": "PASS",
+      "observed": "fade selected and stop control available"
+    },
+    {
+      "action": "Space on stop",
+      "result": "PASS",
+      "observed": "play control available"
+    },
+    {
+      "action": "Enter on play",
+      "result": "PASS",
+      "observed": "stop control available"
+    },
+    {
+      "action": "Space to stop again",
+      "result": "PASS",
+      "observed": "play control available"
+    },
+    {
+      "action": "Focus mode mouse click, Escape on focused button",
+      "result": "PASS",
+      "observed": "image/text/templates panels visible again"
+    }
+  ],
+  "consoleErrors": 0
+}

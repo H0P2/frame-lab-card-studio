@@ -1,0 +1,445 @@
+{
+  "before": {
+    "name": "이전 버전 탭과 함께 시작·페이드 클릭",
+    "expected": "fade 선택 및 기본 문구 표시",
+    "actual": {
+      "status": "작업 준비 중",
+      "text": "",
+      "effect": "none"
+    },
+    "status": "FAIL"
+  },
+  "after": [
+    {
+      "name": "이전 탭을 유지해도 준비 완료",
+      "expected": "원래 템플릿 유지 + 연결 완료",
+      "actual": {
+        "templates": true,
+        "drafts": true,
+        "templateVersion": 1,
+        "draftVersion": 1
+      },
+      "status": "PASS"
+    },
+    {
+      "name": "효과 클릭 none",
+      "expected": "선택 반영 및 none 이외 재생",
+      "actual": {
+        "effect": "none",
+        "playing": false
+      },
+      "status": "PASS"
+    },
+    {
+      "name": "효과 클릭 fade",
+      "expected": "선택 반영 및 none 이외 재생",
+      "actual": {
+        "effect": "fade",
+        "playing": true
+      },
+      "status": "PASS"
+    },
+    {
+      "name": "효과 클릭 slide",
+      "expected": "선택 반영 및 none 이외 재생",
+      "actual": {
+        "effect": "slide",
+        "playing": true
+      },
+      "status": "PASS"
+    },
+    {
+      "name": "효과 클릭 typewriter",
+      "expected": "선택 반영 및 none 이외 재생",
+      "actual": {
+        "effect": "typewriter",
+        "playing": true
+      },
+      "status": "PASS"
+    },
+    {
+      "name": "효과 클릭 zoom",
+      "expected": "선택 반영 및 none 이외 재생",
+      "actual": {
+        "effect": "zoom",
+        "playing": true
+      },
+      "status": "PASS"
+    },
+    {
+      "name": "재생 정지 버튼",
+      "expected": "즉시 정지",
+      "actual": {
+        "busy": false,
+        "undo": 4,
+        "redo": 0,
+        "playing": false,
+        "recording": false,
+        "reduced": false
+      },
+      "status": "PASS"
+    },
+    {
+      "name": "재생 버튼",
+      "expected": "다시 재생",
+      "actual": {
+        "busy": false,
+        "undo": 4,
+        "redo": 0,
+        "playing": true,
+        "recording": false,
+        "reduced": false
+      },
+      "status": "PASS"
+    },
+    {
+      "name": "빠른 효과 클릭 10건",
+      "expected": "10번 모두 반영",
+      "actual": {
+        "undoDelta": 10,
+        "effect": "zoom"
+      },
+      "status": "PASS"
+    },
+    {
+      "name": "움직임 줄이기",
+      "expected": "즉시 정지·영상 비활성",
+      "actual": {
+        "busy": false,
+        "undo": 14,
+        "redo": 0,
+        "playing": false,
+        "recording": false,
+        "reduced": true
+      },
+      "status": "PASS"
+    },
+    {
+      "name": "움직임 다시 허용",
+      "expected": "재생·영상 활성",
+      "actual": {
+        "playDisabled": false,
+        "videoDisabled": false
+      },
+      "status": "PASS"
+    },
+    {
+      "name": "화면비 1:1",
+      "expected": "선택 반영",
+      "actual": {
+        "width": 1080,
+        "height": 1080,
+        "pad": 72,
+        "requested": 76,
+        "effective": 76,
+        "lines": [
+          "오늘의 작은 발견",
+          "내일의 새로운 시작"
+        ],
+        "lineHeight": 106.39999999999999,
+        "y": 795.2,
+        "shiftX": 0,
+        "shiftY": 0,
+        "boxes": [
+          {
+            "x": 72,
+            "y": 795.2,
+            "width": 585.4375,
+            "height": 106.39999999999999
+          },
+          {
+            "x": 72,
+            "y": 901.6,
+            "width": 661.4375,
+            "height": 106.39999999999999
+          }
+        ],
+        "withinBounds": true,
+        "crop": {
+          "x": 0,
+          "y": -135,
+          "width": 1080,
+          "height": 1350
+        }
+      },
+      "status": "PASS"
+    },
+    {
+      "name": "화면비 4:5",
+      "expected": "선택 반영",
+      "actual": {
+        "width": 1080,
+        "height": 1350,
+        "pad": 72,
+        "requested": 76,
+        "effective": 76,
+        "lines": [
+          "오늘의 작은 발견",
+          "내일의 새로운 시작"
+        ],
+        "lineHeight": 106.39999999999999,
+        "y": 1065.2,
+        "shiftX": 0,
+        "shiftY": 0,
+        "boxes": [
+          {
+            "x": 72,
+            "y": 1065.2,
+            "width": 585.4375,
+            "height": 106.39999999999999
+          },
+          {
+            "x": 72,
+            "y": 1171.6000000000001,
+            "width": 661.4375,
+            "height": 106.39999999999999
+          }
+        ],
+        "withinBounds": true,
+        "crop": {
+          "x": 0,
+          "y": 0,
+          "width": 1080,
+          "height": 1350
+        }
+      },
+      "status": "PASS"
+    },
+    {
+      "name": "화면비 9:16",
+      "expected": "선택 반영",
+      "actual": {
+        "width": 1080,
+        "height": 1920,
+        "pad": 72,
+        "requested": 76,
+        "effective": 76,
+        "lines": [
+          "오늘의 작은 발견",
+          "내일의 새로운 시작"
+        ],
+        "lineHeight": 106.39999999999999,
+        "y": 1635.2,
+        "shiftX": 0,
+        "shiftY": 0,
+        "boxes": [
+          {
+            "x": 72,
+            "y": 1635.2,
+            "width": 585.4375,
+            "height": 106.39999999999999
+          },
+          {
+            "x": 72,
+            "y": 1741.6000000000001,
+            "width": 661.4375,
+            "height": 106.39999999999999
+          }
+        ],
+        "withinBounds": true,
+        "crop": {
+          "x": -228,
+          "y": 0,
+          "width": 1536,
+          "height": 1920
+        }
+      },
+      "status": "PASS"
+    },
+    {
+      "name": "프리셋 neon",
+      "expected": "스타일 변경·문구 유지",
+      "actual": {
+        "style": "neon"
+      },
+      "status": "PASS"
+    },
+    {
+      "name": "프리셋 film",
+      "expected": "스타일 변경·문구 유지",
+      "actual": {
+        "style": "film"
+      },
+      "status": "PASS"
+    },
+    {
+      "name": "프리셋 mono",
+      "expected": "스타일 변경·문구 유지",
+      "actual": {
+        "style": "mono"
+      },
+      "status": "PASS"
+    },
+    {
+      "name": "프리셋 editorial",
+      "expected": "스타일 변경·문구 유지",
+      "actual": {
+        "style": "editorial"
+      },
+      "status": "PASS"
+    },
+    {
+      "name": "원본 스타일",
+      "expected": "original 복원",
+      "actual": "original",
+      "status": "PASS"
+    },
+    {
+      "name": "이미지 제거",
+      "expected": "이미지 null",
+      "actual": null,
+      "status": "PASS"
+    },
+    {
+      "name": "샘플 이미지",
+      "expected": "이미지 불러오기",
+      "actual": {
+        "image": true
+      },
+      "status": "PASS"
+    },
+    {
+      "name": "새 카드",
+      "expected": "현재 판 초기화",
+      "actual": "오늘의 작은 발견\n내일의 새로운 시작",
+      "status": "PASS"
+    },
+    {
+      "name": "실행 취소",
+      "expected": "이전 문구",
+      "actual": "오늘의 작은 발견\n내일의 새로운 시작",
+      "status": "PASS"
+    },
+    {
+      "name": "다시 실행",
+      "expected": "변경 문구 복원",
+      "actual": "버튼 확인 실제 문구",
+      "status": "PASS"
+    },
+    {
+      "name": "집중 모드",
+      "expected": "패널 숨김",
+      "actual": "focus-mode",
+      "status": "PASS"
+    },
+    {
+      "name": "Escape",
+      "expected": "편집 패널 복귀",
+      "actual": "",
+      "status": "PASS"
+    },
+    {
+      "name": "새 템플릿 저장 3회",
+      "expected": "안정된 ID 세 개",
+      "actual": [
+        {
+          "id": "36f4427e-0b34-41a4-805e-1dc13fe7952e",
+          "name": "검사 카드 A"
+        },
+        {
+          "id": "b3e2ce32-255f-439a-aea5-3a1ddde0886f",
+          "name": "검사 카드 B"
+        },
+        {
+          "id": "2c128fc1-84ad-4d56-be19-08ad671d34a6",
+          "name": "검사 카드 C"
+        }
+      ],
+      "status": "PASS"
+    },
+    {
+      "name": "템플릿 불러오기",
+      "expected": "선택한 ID",
+      "actual": "36f4427e-0b34-41a4-805e-1dc13fe7952e",
+      "status": "PASS"
+    },
+    {
+      "name": "선택 항목 수정",
+      "expected": "같은 ID 수정",
+      "actual": "36f4427e-0b34-41a4-805e-1dc13fe7952e",
+      "status": "PASS"
+    },
+    {
+      "name": "템플릿 삭제",
+      "expected": "정확한 ID 제거",
+      "actual": "b3e2ce32-255f-439a-aea5-3a1ddde0886f",
+      "status": "PASS"
+    },
+    {
+      "name": "삭제 취소",
+      "expected": "같은 ID 복원",
+      "actual": "b3e2ce32-255f-439a-aea5-3a1ddde0886f",
+      "status": "PASS"
+    },
+    {
+      "name": "JSON 내보내기",
+      "expected": "실제 템플릿 수 일치",
+      "actual": 4,
+      "status": "PASS"
+    },
+    {
+      "name": "JSON 가져오기",
+      "expected": "실제 파일 input 처리·복원",
+      "actual": "4개 템플릿을 복원했습니다. 같은 ID는 갱신하고 나머지 항목은 유지했습니다.",
+      "status": "PASS"
+    },
+    {
+      "name": "PNG 내려받기",
+      "expected": "실제 PNG 1080×1080",
+      "actual": {
+        "bytes": 1173967,
+        "width": 1080,
+        "height": 1080
+      },
+      "status": "PASS"
+    },
+    {
+      "name": "WebM 저장",
+      "expected": "실제 영상 생성 후 버튼 해제",
+      "actual": {
+        "bytes": 828804,
+        "motionEnabled": true
+      },
+      "status": "PASS"
+    },
+    {
+      "name": "새로고침·이전 탭 공존",
+      "expected": "문구·템플릿 유지",
+      "actual": {
+        "text": "버튼 확인 실제 문구",
+        "templates": 4
+      },
+      "status": "PASS"
+    },
+    {
+      "name": "저장 연결이 막혀도 편집",
+      "expected": "효과·문구 반영 및 복구 버튼",
+      "actual": {
+        "storage": {
+          "templates": false,
+          "drafts": false
+        },
+        "text": "연결이 늦어도 지켜야 할 문구",
+        "retryVisible": true
+      },
+      "status": "PASS"
+    },
+    {
+      "name": "저장소 다시 연결",
+      "expected": "사용자가 입력한 문구 유지",
+      "actual": "연결이 늦어도 지켜야 할 문구",
+      "status": "PASS"
+    },
+    {
+      "name": "기존 v2 자동 저장 복원",
+      "expected": "이전 draft 이관",
+      "actual": {
+        "status": "저장 중…",
+        "text": "이전 버전 자동 저장을 보존합니다",
+        "effect": "none"
+      },
+      "status": "PASS"
+    }
+  ],
+  "method": "Actual browser IndexedDB connections held open; DOM click and input events run real handlers. Download anchor interception observes real generated files; focus Escape uses KeyboardEvent. Separate native mouse/keyboard checks supplement these results."
+}
