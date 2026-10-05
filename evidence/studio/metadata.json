@@ -1,0 +1,18 @@
+[
+  {
+    "file": "normalized-gps.jpg",
+    "dimensions": [
+      960,
+      480
+    ],
+    "gps": false
+  },
+  {
+    "file": "gps-free-output.png",
+    "dimensions": [
+      1080,
+      1080
+    ],
+    "gps": false
+  }
+]
