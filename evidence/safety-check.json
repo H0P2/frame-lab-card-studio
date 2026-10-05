@@ -1,0 +1,7 @@
+{
+  "method": "정적 배포 텍스트/JSON에서 인증 비밀값·이메일·전화번호·로컬 사용자 경로 검색; 기본 화면·합성 입력 내용 직접 확인",
+  "findings": [],
+  "personalDataInDefaultContent": 0,
+  "externalImageSources": 0,
+  "secretValues": 0
+}
