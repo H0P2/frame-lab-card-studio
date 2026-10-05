@@ -1,0 +1,67 @@
+{
+  "testedAt": "2026-10-04T11:37:35.812Z",
+  "method": "실제 브라우저의 편집기·Canvas·IndexedDB 실행",
+  "rows": [
+    {
+      "name": "문구 위치 즉시 반영",
+      "expected": "위치 입력 후 y가 즉시 변경",
+      "actual": {
+        "before": 901.6,
+        "after": 72
+      },
+      "result": "PASS"
+    },
+    {
+      "name": "문구 크기 즉시 반영",
+      "expected": "110px로 즉시 변경",
+      "actual": {
+        "size": 110
+      },
+      "result": "PASS"
+    },
+    {
+      "name": "문구 색 즉시 반영",
+      "expected": "색상 상태와 그리기 색 일치",
+      "actual": {
+        "state": "#c9f36c",
+        "drawColor": "#c9f36c"
+      },
+      "result": "PASS"
+    },
+    {
+      "name": "지원하지 않는 파일 UI 거부",
+      "expected": "화면 거부 이유 + 기존 작업 유지",
+      "actual": {
+        "notice": "실제 PNG·JPEG 이미지 파일만 지원합니다. 기존 작업은 유지됩니다.",
+        "preserved": true
+      },
+      "result": "PASS"
+    },
+    {
+      "name": "과도한 줄바꿈",
+      "expected": "거부 이유 표시 + 기존 편집 보존",
+      "actual": {
+        "reason": "줄바꿈이 너무 많아 카드 안에 표시할 수 없습니다. 줄 수를 줄여 주세요. 기존 문구는 유지됩니다.",
+        "preserved": true
+      },
+      "result": "PASS"
+    },
+    {
+      "name": "투명도 유지",
+      "expected": "가장자리 알파 0 유지",
+      "actual": {
+        "alpha": 0
+      },
+      "result": "PASS"
+    },
+    {
+      "name": "메타데이터 정리",
+      "expected": "재인코딩한 JPEG 및 PNG 생성",
+      "actual": {
+        "input": "합성 EXIF GPS를 삽입한 테스트용 JPEG",
+        "normalizedBytes": 18708
+      },
+      "result": "PASS"
+    }
+  ]
+}

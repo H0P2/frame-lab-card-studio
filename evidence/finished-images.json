@@ -1,0 +1,93 @@
+{
+  "testedAt": "2026-10-04T11:38:36.193Z",
+  "method": "실제 브라우저의 편집기·Canvas·IndexedDB 실행",
+  "rows": [
+    {
+      "name": "finished-square.png",
+      "expected": "정상 PNG 디코딩 + 서로 다른 문구/비율",
+      "actual": {
+        "ratio": "1:1",
+        "text": "작은 발견을\n오래 바라보기",
+        "bytes": 1144604,
+        "decodedSize": [
+          1080,
+          1080
+        ],
+        "width": 1080,
+        "height": 1080,
+        "fontSize": 92,
+        "lineCount": 2,
+        "withinBounds": true,
+        "lines": [
+          "작은 발견을",
+          "오래 바라보기"
+        ],
+        "crop": {
+          "x": 0,
+          "y": -135,
+          "width": 1080,
+          "height": 1350
+        }
+      },
+      "result": "PASS"
+    },
+    {
+      "name": "finished-portrait.png",
+      "expected": "정상 PNG 디코딩 + 서로 다른 문구/비율",
+      "actual": {
+        "ratio": "4:5",
+        "text": "지금의 한 걸음이\n내일의 방향이 된다",
+        "bytes": 1412836,
+        "decodedSize": [
+          1080,
+          1350
+        ],
+        "width": 1080,
+        "height": 1350,
+        "fontSize": 92,
+        "lineCount": 2,
+        "withinBounds": true,
+        "lines": [
+          "지금의 한 걸음이",
+          "내일의 방향이 된다"
+        ],
+        "crop": {
+          "x": 0,
+          "y": 0,
+          "width": 1080,
+          "height": 1350
+        }
+      },
+      "result": "PASS"
+    },
+    {
+      "name": "finished-story.png",
+      "expected": "정상 PNG 디코딩 + 서로 다른 문구/비율",
+      "actual": {
+        "ratio": "9:16",
+        "text": "새로운 시선\n새로운 시작",
+        "bytes": 1826177,
+        "decodedSize": [
+          1080,
+          1920
+        ],
+        "width": 1080,
+        "height": 1920,
+        "fontSize": 92,
+        "lineCount": 2,
+        "withinBounds": true,
+        "lines": [
+          "새로운 시선",
+          "새로운 시작"
+        ],
+        "crop": {
+          "x": -228,
+          "y": 0,
+          "width": 1536,
+          "height": 1920
+        }
+      },
+      "result": "PASS"
+    }
+  ]
+}

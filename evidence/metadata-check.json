@@ -1,0 +1,102 @@
+[
+  {
+    "file": "after-long-korean.png",
+    "dimensions": [
+      1080,
+      1080
+    ],
+    "opened": true,
+    "gpsTags": 0,
+    "exifTags": 0
+  },
+  {
+    "file": "before-long-korean.png",
+    "dimensions": [
+      1080,
+      1080
+    ],
+    "opened": true,
+    "gpsTags": 0,
+    "exifTags": 0
+  },
+  {
+    "file": "comparison-1x1.png",
+    "dimensions": [
+      1080,
+      1080
+    ],
+    "opened": true,
+    "gpsTags": 0,
+    "exifTags": 0
+  },
+  {
+    "file": "comparison-4x5.png",
+    "dimensions": [
+      1080,
+      1350
+    ],
+    "opened": true,
+    "gpsTags": 0,
+    "exifTags": 0
+  },
+  {
+    "file": "comparison-9x16.png",
+    "dimensions": [
+      1080,
+      1920
+    ],
+    "opened": true,
+    "gpsTags": 0,
+    "exifTags": 0
+  },
+  {
+    "file": "finished-portrait.png",
+    "dimensions": [
+      1080,
+      1350
+    ],
+    "opened": true,
+    "gpsTags": 0,
+    "exifTags": 0
+  },
+  {
+    "file": "finished-square.png",
+    "dimensions": [
+      1080,
+      1080
+    ],
+    "opened": true,
+    "gpsTags": 0,
+    "exifTags": 0
+  },
+  {
+    "file": "finished-story.png",
+    "dimensions": [
+      1080,
+      1920
+    ],
+    "opened": true,
+    "gpsTags": 0,
+    "exifTags": 0
+  },
+  {
+    "file": "gps-free-output.png",
+    "dimensions": [
+      1080,
+      1080
+    ],
+    "opened": true,
+    "gpsTags": 0,
+    "exifTags": 0
+  },
+  {
+    "file": "normalized-gps.jpg",
+    "dimensions": [
+      960,
+      480
+    ],
+    "opened": true,
+    "gpsTags": 0,
+    "exifTags": 0
+  }
+]

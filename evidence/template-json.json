@@ -1,0 +1,132 @@
+{
+  "testedAt": "2026-10-04T11:35:10.810Z",
+  "method": "실제 브라우저의 편집기·Canvas·IndexedDB 실행",
+  "rows": [
+    {
+      "name": "3개 생성",
+      "expected": "서로 다른 안정 ID 3개",
+      "actual": {
+        "ids": [
+          "d409dd3f-0c1a-45cd-b39d-a626928de9d2",
+          "c59f3497-14c8-402e-a938-060921de3cf2",
+          "2b4c4628-f663-4d07-8335-9e15cdeddf3d"
+        ]
+      },
+      "result": "PASS"
+    },
+    {
+      "name": "불러오기",
+      "expected": "첫 카드 문구·비율 복원",
+      "actual": {
+        "text": "사용자 카드 1",
+        "ratio": "1:1"
+      },
+      "result": "PASS"
+    },
+    {
+      "name": "수정·삭제",
+      "expected": "수정 ID 유지 + 삭제 항목 없음",
+      "actual": {
+        "templates": [
+          {
+            "id": "d409dd3f-0c1a-45cd-b39d-a626928de9d2",
+            "name": "수정 카드",
+            "ratio": "1:1",
+            "text": "수정한 문구"
+          },
+          {
+            "id": "2b4c4628-f663-4d07-8335-9e15cdeddf3d",
+            "name": "검사 카드 3",
+            "ratio": "9:16",
+            "text": "사용자 카드 3"
+          }
+        ]
+      },
+      "result": "PASS"
+    },
+    {
+      "name": "새로고침 유지",
+      "expected": "수정·삭제 결과 유지",
+      "actual": {
+        "templates": [
+          {
+            "id": "d409dd3f-0c1a-45cd-b39d-a626928de9d2",
+            "name": "수정 카드",
+            "ratio": "1:1",
+            "text": "수정한 문구"
+          },
+          {
+            "id": "2b4c4628-f663-4d07-8335-9e15cdeddf3d",
+            "name": "검사 카드 3",
+            "ratio": "9:16",
+            "text": "사용자 카드 3"
+          }
+        ]
+      },
+      "result": "PASS"
+    },
+    {
+      "name": "정상 JSON 복원",
+      "expected": "원래 3개 ID·문구 복원",
+      "actual": {
+        "templates": [
+          {
+            "id": "d409dd3f-0c1a-45cd-b39d-a626928de9d2",
+            "name": "검사 카드 1",
+            "ratio": "1:1",
+            "text": "사용자 카드 1"
+          },
+          {
+            "id": "c59f3497-14c8-402e-a938-060921de3cf2",
+            "name": "검사 카드 2",
+            "ratio": "4:5",
+            "text": "사용자 카드 2"
+          },
+          {
+            "id": "2b4c4628-f663-4d07-8335-9e15cdeddf3d",
+            "name": "검사 카드 3",
+            "ratio": "9:16",
+            "text": "사용자 카드 3"
+          }
+        ]
+      },
+      "result": "PASS"
+    },
+    {
+      "name": "잘못된 날짜 자료형",
+      "expected": "전체 검증 실패 시 기존 목록 불변",
+      "actual": {
+        "reason": "필수 항목이 빠졌거나 템플릿 ID·날짜가 올바르지 않습니다. 기존 목록은 유지됩니다.",
+        "preserved": true
+      },
+      "result": "PASS"
+    },
+    {
+      "name": "손상 문법",
+      "expected": "전체 검증 실패 시 기존 목록 불변",
+      "actual": {
+        "reason": "JSON 문법이 손상됐습니다. 기존 템플릿은 유지됩니다.",
+        "preserved": true
+      },
+      "result": "PASS"
+    },
+    {
+      "name": "필수 누락",
+      "expected": "전체 검증 실패 시 기존 목록 불변",
+      "actual": {
+        "reason": "필수 편집 항목이 빠졌습니다.",
+        "preserved": true
+      },
+      "result": "PASS"
+    },
+    {
+      "name": "뒤쪽 항목 오류",
+      "expected": "전체 검증 실패 시 기존 목록 불변",
+      "actual": {
+        "reason": "필수 편집 항목이 빠졌습니다.",
+        "preserved": true
+      },
+      "result": "PASS"
+    }
+  ]
+}
