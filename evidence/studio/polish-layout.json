@@ -1,0 +1,64 @@
+{
+  "date": "2026-10-05",
+  "method": "Actual local browser DOM geometry and visual inspection; no synthetic layout values.",
+  "implementation_scope": "CSS only; editor HTML and JavaScript unchanged from Studio version 2.",
+  "app_js_sha256": "58dcafbbcf1f3f075b87ee8658e0e41176772bb61f94c289438184a7c2c876e2",
+  "screens": [
+    {
+      "width": 1366,
+      "height": 768,
+      "horizontal_overflow_px": 0,
+      "upload_fully_in_first_viewport": true,
+      "text_fully_in_first_viewport": true,
+      "preview_fully_in_first_viewport": true,
+      "text_rect": {
+        "x": 43,
+        "y": 588.4375,
+        "width": 242,
+        "height": 86
+      },
+      "preview_rect": {
+        "x": 490.5,
+        "y": 190,
+        "width": 338,
+        "height": 338
+      }
+    },
+    {
+      "width": 1920,
+      "height": 1080,
+      "horizontal_overflow_px": 0,
+      "upload_fully_in_first_viewport": true,
+      "text_fully_in_first_viewport": true,
+      "preview_fully_in_first_viewport": true,
+      "text_rect": {
+        "x": 87.5,
+        "y": 664.4375,
+        "width": 256,
+        "height": 93.28125
+      },
+      "preview_rect": {
+        "x": 608.5,
+        "y": 196,
+        "width": 650,
+        "height": 650
+      }
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "horizontal_overflow_px": 0,
+      "upload_fully_in_first_viewport": true,
+      "text_fully_in_first_viewport": true,
+      "preview_fully_in_first_viewport": false,
+      "note": "Mobile stacks editing tools before preview; preview is reached by scrolling.",
+      "text_rect": {
+        "x": 35,
+        "y": 688.4375,
+        "width": 305,
+        "height": 93.28125
+      }
+    }
+  ],
+  "screenshot": "polish-screen.jpg"
+}

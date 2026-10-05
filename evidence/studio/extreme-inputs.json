@@ -1,0 +1,221 @@
+{
+  "testedAt": "2026-10-04T14:14:31.710Z",
+  "method": "실제 브라우저의 편집기·Canvas·IndexedDB 실행",
+  "rows": [
+    {
+      "name": "긴 한글",
+      "expected": "문구 보존 + 모든 줄이 카드 안전 영역 내부",
+      "actual": {
+        "width": 1080,
+        "height": 1080,
+        "fontSize": 33,
+        "lineCount": 20,
+        "withinBounds": true,
+        "lines": [
+          "작은 발견이 쌓여 새로운 시작이 됩니다. 작은 발견이 쌓여 새",
+          "로운 시작이 됩니다. 작은 발견이 쌓여 새로운 시작이 됩니다. ",
+          "작은 발견이 쌓여 새로운 시작이 됩니다. 작은 발견이 쌓여 새",
+          "로운 시작이 됩니다. 작은 발견이 쌓여 새로운 시작이 됩니다. ",
+          "작은 발견이 쌓여 새로운 시작이 됩니다. 작은 발견이 쌓여 새",
+          "로운 시작이 됩니다. 작은 발견이 쌓여 새로운 시작이 됩니다. ",
+          "작은 발견이 쌓여 새로운 시작이 됩니다. 작은 발견이 쌓여 새",
+          "로운 시작이 됩니다. 작은 발견이 쌓여 새로운 시작이 됩니다. ",
+          "작은 발견이 쌓여 새로운 시작이 됩니다. 작은 발견이 쌓여 새",
+          "로운 시작이 됩니다. 작은 발견이 쌓여 새로운 시작이 됩니다. ",
+          "작은 발견이 쌓여 새로운 시작이 됩니다. 작은 발견이 쌓여 새",
+          "로운 시작이 됩니다. 작은 발견이 쌓여 새로운 시작이 됩니다. ",
+          "작은 발견이 쌓여 새로운 시작이 됩니다. 작은 발견이 쌓여 새",
+          "로운 시작이 됩니다. 작은 발견이 쌓여 새로운 시작이 됩니다. ",
+          "작은 발견이 쌓여 새로운 시작이 됩니다. 작은 발견이 쌓여 새",
+          "로운 시작이 됩니다. 작은 발견이 쌓여 새로운 시작이 됩니다. ",
+          "작은 발견이 쌓여 새로운 시작이 됩니다. 작은 발견이 쌓여 새",
+          "로운 시작이 됩니다. 작은 발견이 쌓여 새로운 시작이 됩니다. ",
+          "작은 발견이 쌓여 새로운 시작이 됩니다. 작은 발견이 쌓여 새",
+          "로운 시작이 됩니다. 작은 발견이 쌓여 새로운 시작이 됩니다. "
+        ],
+        "crop": {
+          "x": 0,
+          "y": -135,
+          "width": 1080,
+          "height": 1350
+        }
+      },
+      "result": "PASS"
+    },
+    {
+      "name": "한영 혼합",
+      "expected": "문구 보존 + 모든 줄이 카드 안전 영역 내부",
+      "actual": {
+        "width": 1080,
+        "height": 1080,
+        "fontSize": 52,
+        "lineCount": 12,
+        "withinBounds": true,
+        "lines": [
+          "한글 ABC 123 Network Security mixe",
+          "d문자mixed문자mixed문자mixed문자",
+          "mixed문자mixed문자mixed문자mixed",
+          "문자mixed문자mixed문자mixed문자mi",
+          "xed문자mixed문자mixed문자mixed문",
+          "자mixed문자mixed문자mixed문자mixe",
+          "d문자mixed문자mixed문자mixed문자",
+          "mixed문자mixed문자mixed문자mixed",
+          "문자mixed문자mixed문자mixed문자mi",
+          "xed문자mixed문자mixed문자mixed문",
+          "자mixed문자mixed문자mixed문자mixe",
+          "d문자mixed문자mixed문자mixed문자"
+        ],
+        "crop": {
+          "x": 0,
+          "y": -135,
+          "width": 1080,
+          "height": 1350
+        }
+      },
+      "result": "PASS"
+    },
+    {
+      "name": "명시적 줄바꿈",
+      "expected": "문구 보존 + 모든 줄이 카드 안전 영역 내부",
+      "actual": {
+        "width": 1080,
+        "height": 1080,
+        "fontSize": 76,
+        "lineCount": 4,
+        "withinBounds": true,
+        "lines": [
+          "첫째 줄",
+          "",
+          "셋째 줄",
+          "끝"
+        ],
+        "crop": {
+          "x": 0,
+          "y": -135,
+          "width": 1080,
+          "height": 1350
+        }
+      },
+      "result": "PASS"
+    },
+    {
+      "name": "이모지",
+      "expected": "문구 보존 + 모든 줄이 카드 안전 영역 내부",
+      "actual": {
+        "width": 1080,
+        "height": 1080,
+        "fontSize": 76,
+        "lineCount": 7,
+        "withinBounds": true,
+        "lines": [
+          "개발 👩🏽‍💻 보안 🔐 가족 👨‍👩‍👧‍👦 ",
+          "국기 🇰🇷",
+          "✨✨✨✨✨✨✨✨",
+          "✨✨✨✨✨✨✨✨",
+          "✨✨✨✨✨✨✨✨",
+          "✨✨✨✨✨✨✨✨",
+          "✨✨✨✨✨✨✨✨"
+        ],
+        "crop": {
+          "x": 0,
+          "y": -135,
+          "width": 1080,
+          "height": 1350
+        }
+      },
+      "result": "PASS"
+    },
+    {
+      "name": "빈 문구",
+      "expected": "문구 보존 + 모든 줄이 카드 안전 영역 내부",
+      "actual": {
+        "width": 1080,
+        "height": 1080,
+        "fontSize": 76,
+        "lineCount": 1,
+        "withinBounds": true,
+        "lines": [
+          ""
+        ],
+        "crop": {
+          "x": 0,
+          "y": -135,
+          "width": 1080,
+          "height": 1350
+        }
+      },
+      "result": "PASS"
+    },
+    {
+      "name": "portrait.png",
+      "expected": "PNG/JPEG 읽기 성공 + 편집 유지",
+      "actual": {
+        "width": 300,
+        "height": 600,
+        "type": "image/png",
+        "text": "실제 이미지 검사"
+      },
+      "result": "PASS"
+    },
+    {
+      "name": "landscape.jpg",
+      "expected": "PNG/JPEG 읽기 성공 + 편집 유지",
+      "actual": {
+        "width": 960,
+        "height": 480,
+        "type": "image/jpeg",
+        "text": "실제 이미지 검사"
+      },
+      "result": "PASS"
+    },
+    {
+      "name": "transparent.png",
+      "expected": "PNG/JPEG 읽기 성공 + 편집 유지",
+      "actual": {
+        "width": 512,
+        "height": 512,
+        "type": "image/png",
+        "text": "실제 이미지 검사"
+      },
+      "result": "PASS"
+    },
+    {
+      "name": "tiny.png",
+      "expected": "PNG/JPEG 읽기 성공 + 편집 유지",
+      "actual": {
+        "width": 16,
+        "height": 16,
+        "type": "image/png",
+        "text": "실제 이미지 검사"
+      },
+      "result": "PASS"
+    },
+    {
+      "name": "위장 PNG",
+      "expected": "거부 이유 표시 + 기존 편집 보존",
+      "actual": {
+        "reason": "실제 PNG·JPEG 이미지 파일만 지원합니다. 기존 작업은 유지됩니다.",
+        "preserved": true
+      },
+      "result": "PASS"
+    },
+    {
+      "name": "손상 PNG",
+      "expected": "거부 이유 표시 + 기존 편집 보존",
+      "actual": {
+        "reason": "이미지 데이터가 손상됐거나 읽을 수 없습니다. 기존 작업은 유지됩니다.",
+        "preserved": true
+      },
+      "result": "PASS"
+    },
+    {
+      "name": "8MB 초과",
+      "expected": "거부 이유 표시 + 기존 편집 보존",
+      "actual": {
+        "reason": "파일은 최대 8MB까지 지원합니다. 기존 작업은 유지됩니다.",
+        "preserved": true
+      },
+      "result": "PASS"
+    }
+  ]
+}

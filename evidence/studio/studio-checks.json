@@ -1,0 +1,267 @@
+{
+  "testedAt": "2026-10-04T14:15:32.335Z",
+  "method": "실제 브라우저의 편집기·Canvas·IndexedDB 실행",
+  "rows": [
+    {
+      "name": "문구 직접 이동",
+      "expected": "x +40 · y +30",
+      "actual": {
+        "before": {
+          "x": 209.28125,
+          "y": 486.8,
+          "width": 661.4375,
+          "height": 106.39999999999999
+        },
+        "after": {
+          "x": 249.28125,
+          "y": 516.8,
+          "width": 661.4375,
+          "height": 106.39999999999999
+        }
+      },
+      "result": "PASS"
+    },
+    {
+      "name": "실행 취소",
+      "expected": "위치 설정 복원",
+      "actual": {
+        "state": {
+          "ratio": "1:1",
+          "text": "직접 움직이는 문구",
+          "fontSize": 76,
+          "color": "#ffffff",
+          "position": "center",
+          "align": "center",
+          "fit": "cover",
+          "background": "#171922",
+          "scrim": true,
+          "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAh0lEQVR4AaTMyw2AIBBFUUIbFqIN6N7Ygy60HBdqDX72VGAhWgc6JhjkIwNMcpPZvEP5fcecc7W8Hbhcuo7cFD2XgiQVI6FHYRiDPEAM8gKhyAcIQTRAIKxv4HVmBGBVdCPBIFYAi/wCGMQJCGQva3i1UACssm0iJgQN2BAvwIR4AyoSBMjIBQAA///0GrcGAAAABklEQVQDAGS7V6IGDxOcAAAAAElFTkSuQmCC",
+          "offsetX": 0,
+          "offsetY": 0,
+          "style": "original",
+          "effect": "none"
+        }
+      },
+      "result": "PASS"
+    },
+    {
+      "name": "다시 실행",
+      "expected": "이동한 설정 복원",
+      "actual": {
+        "state": {
+          "ratio": "1:1",
+          "text": "직접 움직이는 문구",
+          "fontSize": 76,
+          "color": "#ffffff",
+          "position": "center",
+          "align": "center",
+          "fit": "cover",
+          "background": "#171922",
+          "scrim": true,
+          "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAh0lEQVR4AaTMyw2AIBBFUUIbFqIN6N7Ygy60HBdqDX72VGAhWgc6JhjkIwNMcpPZvEP5fcecc7W8Hbhcuo7cFD2XgiQVI6FHYRiDPEAM8gKhyAcIQTRAIKxv4HVmBGBVdCPBIFYAi/wCGMQJCGQva3i1UACssm0iJgQN2BAvwIR4AyoSBMjIBQAA///0GrcGAAAABklEQVQDAGS7V6IGDxOcAAAAAElFTkSuQmCC",
+          "offsetX": 0.037037037037037035,
+          "offsetY": 0.027777777777777776,
+          "style": "original",
+          "effect": "none"
+        }
+      },
+      "result": "PASS"
+    },
+    {
+      "name": "문구 경계 제한",
+      "expected": "끝까지 이동해도 카드 안전 영역 내부",
+      "actual": {
+        "layout": {
+          "width": 1080,
+          "height": 1080,
+          "pad": 72,
+          "requested": 76,
+          "effective": 76,
+          "lines": [
+            "직접 움직이는 문구"
+          ],
+          "lineHeight": 106.39999999999999,
+          "y": 901.6,
+          "shiftX": 137.28125,
+          "shiftY": 414.8,
+          "boxes": [
+            {
+              "x": 346.5625,
+              "y": 901.6,
+              "width": 661.4375,
+              "height": 106.39999999999999
+            }
+          ],
+          "withinBounds": true,
+          "crop": {
+            "x": 0,
+            "y": 0,
+            "width": 1080,
+            "height": 1080
+          }
+        }
+      },
+      "result": "PASS"
+    },
+    {
+      "name": "키보드 이동",
+      "expected": "Shift 방향키 +20px",
+      "actual": {
+        "before": 486.8,
+        "after": 506.8
+      },
+      "result": "PASS"
+    },
+    {
+      "name": "드래그 이벤트 이동",
+      "expected": "표시 픽셀 움직임을 출력 좌표로 환산",
+      "actual": {
+        "before": 506.8,
+        "after": 554.587610619469,
+        "expectedDelta": 47.78761061946903
+      },
+      "result": "PASS"
+    },
+    {
+      "name": "프리셋 neon",
+      "expected": "스타일 반영 + 이미지·문구 보존",
+      "actual": {
+        "style": "neon",
+        "imagePreserved": true,
+        "textPreserved": true
+      },
+      "result": "PASS"
+    },
+    {
+      "name": "프리셋 film",
+      "expected": "스타일 반영 + 이미지·문구 보존",
+      "actual": {
+        "style": "film",
+        "imagePreserved": true,
+        "textPreserved": true
+      },
+      "result": "PASS"
+    },
+    {
+      "name": "프리셋 mono",
+      "expected": "스타일 반영 + 이미지·문구 보존",
+      "actual": {
+        "style": "mono",
+        "imagePreserved": true,
+        "textPreserved": true
+      },
+      "result": "PASS"
+    },
+    {
+      "name": "프리셋 editorial",
+      "expected": "스타일 반영 + 이미지·문구 보존",
+      "actual": {
+        "style": "editorial",
+        "imagePreserved": true,
+        "textPreserved": true
+      },
+      "result": "PASS"
+    },
+    {
+      "name": "작업 자동 복구",
+      "expected": "새로고침 후 전체 설정 복원",
+      "actual": {
+        "state": {
+          "ratio": "4:5",
+          "text": "자동 복구 검사\n실제 새로고침",
+          "fontSize": 82,
+          "color": "#ffffff",
+          "position": "top",
+          "align": "left",
+          "fit": "cover",
+          "background": "#17202b",
+          "scrim": true,
+          "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAh0lEQVR4AaTMyw2AIBBFUUIbFqIN6N7Ygy60HBdqDX72VGAhWgc6JhjkIwNMcpPZvEP5fcecc7W8Hbhcuo7cFD2XgiQVI6FHYRiDPEAM8gKhyAcIQTRAIKxv4HVmBGBVdCPBIFYAi/wCGMQJCGQva3i1UACssm0iJgQN2BAvwIR4AyoSBMjIBQAA///0GrcGAAAABklEQVQDAGS7V6IGDxOcAAAAAElFTkSuQmCC",
+          "offsetX": 0,
+          "offsetY": 0.03,
+          "style": "editorial",
+          "effect": "fade"
+        },
+        "draftStatus": "저장 중…"
+      },
+      "result": "PASS"
+    },
+    {
+      "name": "기존 JSON 호환",
+      "expected": "새 기능 항목 없는 이전 템플릿도 복원",
+      "actual": {
+        "count": 3
+      },
+      "result": "PASS"
+    },
+    {
+      "name": "움직임 시작",
+      "expected": "미리보기 실행 중",
+      "actual": {
+        "playing": true
+      },
+      "result": "PASS"
+    },
+    {
+      "name": "움직임 즉시 줄이기",
+      "expected": "재생 정지 + 영상 버튼 비활성",
+      "actual": {
+        "undo": 0,
+        "redo": 0,
+        "playing": false,
+        "recording": false,
+        "reduced": true,
+        "disabled": true
+      },
+      "result": "PASS"
+    },
+    {
+      "name": "WebM fade",
+      "expected": "실제 인코딩 파일 디코딩 + 1080×1080",
+      "actual": {
+        "effect": "fade",
+        "bytes": 725007,
+        "width": 1080,
+        "height": 1080,
+        "duration": 2.976
+      },
+      "result": "PASS"
+    },
+    {
+      "name": "WebM slide",
+      "expected": "실제 인코딩 파일 디코딩 + 1080×1080",
+      "actual": {
+        "effect": "slide",
+        "bytes": 689049,
+        "width": 1080,
+        "height": 1080,
+        "duration": 2.973
+      },
+      "result": "PASS"
+    },
+    {
+      "name": "WebM typewriter",
+      "expected": "실제 인코딩 파일 디코딩 + 1080×1080",
+      "actual": {
+        "effect": "typewriter",
+        "bytes": 194018,
+        "width": 1080,
+        "height": 1080,
+        "duration": 2.978
+      },
+      "result": "PASS"
+    },
+    {
+      "name": "WebM zoom",
+      "expected": "실제 인코딩 파일 디코딩 + 1080×1080",
+      "actual": {
+        "effect": "zoom",
+        "bytes": 583144,
+        "width": 1080,
+        "height": 1080,
+        "duration": 2.984
+      },
+      "result": "PASS"
+    }
+  ]
+}

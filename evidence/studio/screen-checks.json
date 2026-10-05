@@ -1,0 +1,84 @@
+{
+  "testedAt": "2026-10-04T14:15:00.099Z",
+  "method": "실제 브라우저의 편집기·Canvas·IndexedDB 실행",
+  "rows": [
+    {
+      "name": "1366×768",
+      "expected": "첫 화면 이미지·문구 도구 + 가로 넘침 0",
+      "actual": {
+        "viewport": [
+          1366,
+          768
+        ],
+        "image": {
+          "x": 18,
+          "y": 161,
+          "width": 243,
+          "height": 95,
+          "visible": true
+        },
+        "text": {
+          "x": 18,
+          "y": 586.59375,
+          "width": 243,
+          "height": 81,
+          "visible": true
+        },
+        "horizontalOverflow": 0
+      },
+      "result": "PASS"
+    },
+    {
+      "name": "1920×1080",
+      "expected": "첫 화면 이미지·문구 도구 + 가로 넘침 0",
+      "actual": {
+        "viewport": [
+          1920,
+          1080
+        ],
+        "image": {
+          "x": 24,
+          "y": 163,
+          "width": 251,
+          "height": 95,
+          "visible": true
+        },
+        "text": {
+          "x": 24,
+          "y": 567.796875,
+          "width": 251,
+          "height": 81,
+          "visible": true
+        },
+        "horizontalOverflow": 0
+      },
+      "result": "PASS"
+    },
+    {
+      "name": "390×844",
+      "expected": "가로 넘침 0",
+      "actual": {
+        "viewport": [
+          390,
+          844
+        ],
+        "image": {
+          "x": 22,
+          "y": 210,
+          "width": 331,
+          "height": 101,
+          "visible": true
+        },
+        "text": {
+          "x": 22,
+          "y": 636.796875,
+          "width": 331,
+          "height": 85,
+          "visible": true
+        },
+        "horizontalOverflow": 0
+      },
+      "result": "PASS"
+    }
+  ]
+}
