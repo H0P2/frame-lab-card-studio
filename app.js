@@ -42,6 +42,7 @@ async function openDB(name=DBNAME,stores=['templates']){
 function syncStorageControls(){
   $('createTemplate').disabled=!db||recording;$('updateTemplate').disabled=!db||!selected||recording;
   $('jsonFile').disabled=!db||recording;$('exportJSON').disabled=!db||recording;
+  $('applyImport').disabled=!db||!pendingImport||recording;
   $('undoDelete').disabled=!db||recording;$('retryStorage').hidden=!!db&&!!draftDB;
   $('retryStorage').disabled=!!storageConnectTask;
 }
@@ -104,10 +105,45 @@ async function previewImportJSON(raw){
   pendingImport={records:next,newCount:next.length-updatedCount,updatedCount};
   $('importCounts').textContent=`신규 ${pendingImport.newCount} · 갱신 ${pendingImport.updatedCount}`;
   $('importPreview').hidden=false;
+  syncStorageControls();
   notify('검증이 끝났습니다. 적용 또는 취소를 선택하세요.');
   return {newCount:pendingImport.newCount,updatedCount:pendingImport.updatedCount};
 }
 async function importJSON(raw){return previewImportJSON(raw)}
+async function applyImportJSON(){
+  if(!pendingImport)throw Error('적용할 템플릿이 없습니다.');
+  if(!db)throw Error('이 브라우저에서 템플릿을 저장할 수 없습니다.');
+  const candidate=pendingImport,connection=db;
+  const counts=await new Promise((resolve,reject)=>{
+    let tx,failed=false,counts;
+    const fail=error=>{if(failed)return;failed=true;try{tx?.abort()}catch{}reject(error instanceof Error?error:Error('템플릿을 저장하지 못했습니다. 기존 목록은 유지됩니다.'))};
+    try{
+      tx=connection.transaction('templates','readwrite');
+      const store=tx.objectStore('templates'),request=store.getAll();
+      request.onsuccess=()=>{
+        try{
+          const active=request.result.filter(t=>!t.deleted),currentIds=new Set(active.map(t=>t.id));
+          const merged=new Map(active.map(t=>[t.id,t]));
+          for(const item of candidate.records)merged.set(item.id,item);
+          if(merged.size>MAX_TEMPLATES)throw Error('가져오기 후 템플릿이 24개를 넘습니다. 기존 목록은 유지됩니다.');
+          const data={format:'frame-lab-templates',version:1,templates:[...merged.values()].map(t=>({id:t.id,name:t.name,createdAt:t.createdAt,updatedAt:t.updatedAt,editor:t.editor}))};
+          if(new Blob([JSON.stringify(data,null,2)]).size>MAX_JSON)throw Error('템플릿 전체 이미지와 설정은 32MB까지 보관합니다. 기존 목록은 유지됩니다.');
+          counts={newCount:candidate.records.filter(t=>!currentIds.has(t.id)).length};
+          counts.updatedCount=candidate.records.length-counts.newCount;
+          for(const item of candidate.records)store.put(item);
+        }catch(error){fail(error)}
+      };
+      request.onerror=()=>fail(request.error);
+      tx.oncomplete=()=>{if(!failed)resolve(counts)};
+      tx.onabort=()=>fail(tx.error||Error('저장 공간이 부족하거나 저장이 거부됐습니다. 기존 템플릿은 유지됩니다.'));
+      tx.onerror=()=>fail(tx.error);
+    }catch(error){fail(error)}
+  });
+  if(pendingImport===candidate)cancelImportJSON();
+  await refreshTemplates();
+  notify(`신규 ${counts.newCount} · 갱신 ${counts.updatedCount} 적용 완료`);
+  return counts;
+}
 function run(action){const execute=async()=>{busy=true;try{return await action()}catch(e){notify(e.message||'작업을 완료하지 못했습니다. 기존 작업은 유지됩니다.',true)}finally{busy=false}};const operation=actionQueue.then(execute,execute);actionQueue=operation.catch(()=>{});return operation}
 // Studio state is separate from the current card and stored templates.
 let undoStack=[],redoStack=[],lastAction=null,draftTimer=0,draftSequence=0,draftPending=Promise.resolve(),motionFrame=0,motionStart=0,recording=false,drag=null,dragSequence=0,editRevision=0,storageConnectTask=null,storageReady=Promise.resolve(false);
@@ -228,7 +264,7 @@ function bindStudio(){
   new ResizeObserver(updateSelection).observe($('canvasWrap'));window.addEventListener('pagehide',()=>{stopMotion();flushDraft().catch(()=>{})});document.addEventListener('visibilitychange',()=>{if(document.hidden){stopMotion();if(!recording)render()}});syncStudio();
 }
 
-function bind(){for(const id of ['text','fontSize','position','align','fit','background','scrim','textColor'])$(id).addEventListener('input',()=>{const k=id==='textColor'?'color':id,value=id==='scrim'?$(id).checked:id==='fontSize'?Number($(id).value):$(id).value,next={...state,[k]:value};try{validateState(next);calculateLayout(next,document.createElement('canvas').getContext('2d'));if(recording)throw Error('영상 저장 중에는 편집을 잠시 기다려 주세요.');if(k==='position')next.offsetY=0;if(k==='align')next.offsetX=0;remember(state,next,k);state=next;render();scheduleDraft()}catch(e){syncControls();notify(e.message,true)}});document.querySelectorAll('[data-ratio]').forEach(b=>b.onclick=()=>run(()=>configure({ratio:b.dataset.ratio})));$('sample').onclick=()=>run(()=>configure({image:sampleImage()}));$('removeImage').onclick=()=>run(async()=>{readSequence++;await configure({image:null});$('imageInfo').textContent='이미지 없음 · 단색 배경'});$('download').onclick=()=>run(async()=>{downloadBlob(await exportPNG(),`frame-lab-${state.ratio.replace(':','x')}.png`);notify('PNG 이미지를 내려받았습니다. 미리보기와 같은 배치입니다.')});$('imageFile').onchange=e=>{const f=e.target.files[0];e.target.value='';if(f)run(()=>importImage(f))};$('createTemplate').onclick=()=>run(()=>createTemplate($('templateName').value));$('updateTemplate').onclick=()=>run(()=>updateTemplate(selected,$('templateName').value));$('undoDelete').onclick=()=>run(undoDelete);$('exportJSON').onclick=()=>run(()=>{downloadBlob(new Blob([exportJSON()],{type:'application/json'}),'frame-lab-templates.json');notify('템플릿 JSON을 내려받았습니다.')});$('jsonFile').onchange=e=>{const f=e.target.files[0];e.target.value='';if(f)run(async()=>{if(f.size>MAX_JSON)throw Error('JSON은 최대 32MB까지 지원합니다.');return previewImportJSON(await f.text())})};$('cancelImport').onclick=cancelImportJSON}
+function bind(){for(const id of ['text','fontSize','position','align','fit','background','scrim','textColor'])$(id).addEventListener('input',()=>{const k=id==='textColor'?'color':id,value=id==='scrim'?$(id).checked:id==='fontSize'?Number($(id).value):$(id).value,next={...state,[k]:value};try{validateState(next);calculateLayout(next,document.createElement('canvas').getContext('2d'));if(recording)throw Error('영상 저장 중에는 편집을 잠시 기다려 주세요.');if(k==='position')next.offsetY=0;if(k==='align')next.offsetX=0;remember(state,next,k);state=next;render();scheduleDraft()}catch(e){syncControls();notify(e.message,true)}});document.querySelectorAll('[data-ratio]').forEach(b=>b.onclick=()=>run(()=>configure({ratio:b.dataset.ratio})));$('sample').onclick=()=>run(()=>configure({image:sampleImage()}));$('removeImage').onclick=()=>run(async()=>{readSequence++;await configure({image:null});$('imageInfo').textContent='이미지 없음 · 단색 배경'});$('download').onclick=()=>run(async()=>{downloadBlob(await exportPNG(),`frame-lab-${state.ratio.replace(':','x')}.png`);notify('PNG 이미지를 내려받았습니다. 미리보기와 같은 배치입니다.')});$('imageFile').onchange=e=>{const f=e.target.files[0];e.target.value='';if(f)run(()=>importImage(f))};$('createTemplate').onclick=()=>run(()=>createTemplate($('templateName').value));$('updateTemplate').onclick=()=>run(()=>updateTemplate(selected,$('templateName').value));$('undoDelete').onclick=()=>run(undoDelete);$('exportJSON').onclick=()=>run(()=>{downloadBlob(new Blob([exportJSON()],{type:'application/json'}),'frame-lab-templates.json');notify('템플릿 JSON을 내려받았습니다.')});$('jsonFile').onchange=e=>{const f=e.target.files[0];e.target.value='';if(f)run(async()=>{if(f.size>MAX_JSON)throw Error('JSON은 최대 32MB까지 지원합니다.');return previewImportJSON(await f.text())})};$('cancelImport').onclick=cancelImportJSON;$('applyImport').onclick=()=>run(applyImportJSON)}
 bind();await document.fonts.ready;await configure({image:sampleImage()},{normalize:false,record:false});bindStudio();undoStack=[];redoStack=[];syncStudio();syncStorageControls();storageReady=connectStorage({restore:true});
-if(LAB)window.FrameLab={whenStorageReady:()=>storageReady,getStorageState:()=>({templates:!!db,drafts:!!draftDB,templateVersion:db?.version,draftVersion:draftDB?.version}),undo,redo,moveText,applyPreset,flushDraft,playMotion,stopMotion,exportVideo,getStudioState:()=>({busy,undo:undoStack.length,redo:redoStack.length,playing:!!motionFrame,recording,reduced:$('reduceMotion').checked}),configure,snapshot,importImage,exportPNG,createTemplate,loadTemplate,updateTemplate,deleteTemplate,undoDelete,importJSON,previewImportJSON,cancelImportJSON,exportJSON,refreshTemplates,sampleImage,normalizeFile,draw,dbName:DBNAME};
+if(LAB)window.FrameLab={whenStorageReady:()=>storageReady,getStorageState:()=>({templates:!!db,drafts:!!draftDB,templateVersion:db?.version,draftVersion:draftDB?.version}),undo,redo,moveText,applyPreset,flushDraft,playMotion,stopMotion,exportVideo,getStudioState:()=>({busy,undo:undoStack.length,redo:redoStack.length,playing:!!motionFrame,recording,reduced:$('reduceMotion').checked}),configure,snapshot,importImage,exportPNG,createTemplate,loadTemplate,updateTemplate,deleteTemplate,undoDelete,importJSON,previewImportJSON,cancelImportJSON,applyImportJSON,exportJSON,refreshTemplates,sampleImage,normalizeFile,draw,dbName:DBNAME};
 if(document.modelContext?.registerTool){const context=document.modelContext,lifecycle=new AbortController();const register=(name,description,properties,required,execute,readOnlyHint=false)=>{try{Promise.resolve(context.registerTool({name,description,inputSchema:{type:'object',properties,required,additionalProperties:false},annotations:{readOnlyHint,untrustedContentHint:true},execute},{signal:lifecycle.signal})).catch(()=>{})}catch{}};register('get_card_state','현재 카드 설정과 사용자 템플릿 목록을 읽습니다.',{},[],()=>({ratio:state.ratio,text:state.text,fontSize:state.fontSize,color:state.color,position:state.position,templates:snapshot().templates}),true);register('configure_card','문구·비율·위치를 변경하고 카드 미리보기에 반영합니다.',{text:{type:'string',maxLength:2000},ratio:{type:'string',enum:Object.keys(SIZES)},position:{type:'string',enum:['top','center','bottom']}},[],async input=>{if(!input||Object.keys(input).some(k=>!['text','ratio','position'].includes(k)))throw Error('허용되지 않은 편집 입력입니다.');await configure(input);return {ratio:state.ratio,lineCount:layout.lines.length,effectiveFontSize:layout.effective}});register('create_card_template','현재 카드를 이 브라우저에 새 템플릿으로 저장합니다.',{name:{type:'string',minLength:1,maxLength:40}},['name'],async input=>createTemplate(input.name));window.addEventListener('pagehide',()=>lifecycle.abort(),{once:true})}

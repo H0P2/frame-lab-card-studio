@@ -1,0 +1,24 @@
+{
+  "phase": "AI B complete",
+  "measured_at_kst": "2026-10-08 11:32:54",
+  "source_start": "95010c10d24d3fffc59eecfca610ce1ad3d7e38a",
+  "contract": "t05/fixed-contract.md",
+  "url": "http://127.0.0.1:8883/t05/checks.html",
+  "run_count": 1,
+  "error_runs": 0,
+  "pass_count": 10,
+  "fail_count": 0,
+  "results": {
+    "I01": "PASS",
+    "I02": "PASS",
+    "I03": "PASS",
+    "I04": "PASS",
+    "I05": "PASS",
+    "I06": "PASS",
+    "I07": "PASS",
+    "I08": "PASS",
+    "I09": "PASS",
+    "I10": "PASS"
+  },
+  "note": "Actual browser run against the checked-out repository. The operator applied and reviewed AI B's code guidance; AI Studio did not run the local tests itself. Two preliminary AI B replies contained code defects and were corrected before this first full B test run."
+}
