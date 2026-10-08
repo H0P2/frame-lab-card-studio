@@ -1,7 +1,10 @@
 {
   "phase": "AI B complete",
+  "started_at_kst": "2026-10-08 11:29:00",
+  "ended_at_kst": "2026-10-08 11:32:54",
   "measured_at_kst": "2026-10-08 11:32:54",
   "source_start": "95010c10d24d3fffc59eecfca610ce1ad3d7e38a",
+  "source_end": "cd5c80d59f74904a5eab039bdadf4c2cc1c557d3",
   "contract": "t05/fixed-contract.md",
   "url": "http://127.0.0.1:8883/t05/checks.html",
   "run_count": 1,

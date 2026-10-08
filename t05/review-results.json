@@ -1,0 +1,23 @@
+{
+  "phase": "post-comparison Claude review and operator verification",
+  "measured_at_kst": "2026-10-08 11:44:00",
+  "fixed_contract_unchanged": true,
+  "fixed_checks": { "pass": 10, "total": 10, "fail": 0 },
+  "supplemental_checks": {
+    "pass": 3,
+    "total": 3,
+    "fail": 0,
+    "names": [
+      "Reject stale preview when an ID appears before apply",
+      "Reject import when current DB reaches 24 after preview",
+      "Disable cancel while applying"
+    ]
+  },
+  "existing_regression": {
+    "pass": 52,
+    "total": 52,
+    "fail": 0,
+    "source": "t05/regression-all.json"
+  },
+  "note": "All counts are actual browser runs. The first historical regression run failed because its old immediate-import step did not click Apply; the harness action was updated for the new two-step workflow, with assertions unchanged. Claude performed code review only and did not run these tests."
+}

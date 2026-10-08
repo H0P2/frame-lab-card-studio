@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="ko">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>T05 · 끊긴 대화에서 이어진 Frame Lab</title>
+<style>
+:root{font-family:system-ui,"Malgun Gothic",sans-serif;color:#17241e;background:#f3f5f0}*{box-sizing:border-box}body{margin:0}main{max-width:1080px;margin:auto;padding:44px 22px 90px}header{background:#173b31;color:#fff;padding:36px;border-radius:24px}h1{font-size:clamp(2rem,5vw,3.4rem);line-height:1.17;margin:10px 0}header p{max-width:720px;line-height:1.7;color:#dcebe1}.eyebrow{font-size:.78rem;letter-spacing:.18em;font-weight:800;text-transform:uppercase;color:#9ee0bc}.meta{display:flex;gap:12px;flex-wrap:wrap;margin-top:24px}.chip{border:1px solid #9dc7ab;border-radius:99px;padding:7px 12px;font-size:.83rem}section{background:white;border:1px solid #d9e3d9;border-radius:20px;padding:28px;margin-top:20px}h2{margin:0 0 18px;font-size:1.45rem}h3{font-size:1.05rem;margin:24px 0 8px}p,li{line-height:1.7}a{color:#135e43;text-underline-offset:3px}header a{color:#b9f5c8}.lead{font-size:1.12rem;max-width:770px}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.stat{background:#edf5eb;border-radius:14px;padding:18px}.stat b{display:block;font-size:1.8rem}.stat span{font-size:.86rem;color:#3f5b4e}.scroll{overflow:auto}table{width:100%;border-collapse:collapse;min-width:720px}th,td{border-bottom:1px solid #dce5dc;padding:13px 12px;text-align:left}th{background:#f1f6f0;font-size:.84rem}td strong{color:#12623d}.muted{color:#516359;font-size:.9rem}.timeline{list-style:none;padding:0;margin:0}.timeline li{border-left:3px solid #88bea0;padding:2px 0 20px 18px;margin-left:8px}.timeline b{display:block}.links{display:flex;flex-wrap:wrap;gap:10px}.links a{display:inline-block;border:1px solid #a7c8b0;padding:10px 14px;border-radius:10px;text-decoration:none;font-weight:700}.note{background:#fff9e8;border-left:4px solid #d0a244;padding:15px 18px;border-radius:6px}.decision{display:grid;grid-template-columns:140px 1fr;gap:10px;border-bottom:1px solid #e3e9e3;padding:12px 0}.decision b{color:#1d563d}footer{font-size:.85rem;color:#66776b;margin-top:25px}@media(max-width:680px){.grid{grid-template-columns:1fr}.decision{grid-template-columns:1fr;gap:2px}section{padding:22px}}
+</style>
+<main>
+<header>
+  <div class="eyebrow">ALEPH STUDIO · T05 · 공개 비교 보고서</div>
+  <h1>대화가 끊겨도<br>이어지는 프로젝트</h1>
+  <p>Frame Lab의 템플릿 JSON 가져오기를 두 AI 단계로 완성했다. 첫 단계는 검증과 미리보기에서 멈추고, 다음 단계는 대화 전문 없이 공개 저장소와 7칸 인수인계만 받아 원자적 적용을 완성했다.</p>
+  <div class="meta"><span class="chip">같은 고정 검사 I01–I10</span><span class="chip">AI별 45분 · 명시적 요청 최대 4회</span><span class="chip">완료 검사 10/10</span></div>
+</header>
+<section>
+  <h2>완성된 동작</h2>
+  <p class="lead">JSON 파일을 선택하면 전체 항목을 먼저 검증하고 <b>신규 N · 갱신 M</b>을 보여준다. 적용 전에는 브라우저 저장소를 바꾸지 않는다. 취소하면 현재 목록이 유지된다. 적용을 누르면 그 시점의 저장소 상태에서 24개·32MB 한도를 다시 확인하고 한 번의 트랜잭션으로 반영한다.</p>
+  <div class="grid"><div class="stat"><b>7 → 10</b><span>인수인계 전후 통과 검사</span></div><div class="stat"><b>1 → 0</b><span>실패가 있는 전체 검사 회차</span></div><div class="stat"><b>1 → 3</b><span>각 단계 명시적 AI 요청 수</span></div></div>
+</section>
+<section>
+  <h2>이름을 가린 비교</h2>
+  <p class="muted">판정 표에서는 서비스와 모델 이름을 표시하지 않았다. 시간은 각 단계의 실제 시작부터 중단·완료까지, 오류는 고정 검사 10개를 모두 실행한 회차에서 FAIL이 하나라도 나온 횟수다. 답변의 코드 문제만 발견한 검토는 오류 회차에 넣지 않았다.</p>
+  <div class="scroll"><table><thead><tr><th>익명 단계</th><th>실제 작업시간</th><th>명시적 요청/호출</th><th>오류 회차</th><th>고정 검사 통과</th><th>시작 소스</th><th>종료 소스</th></tr></thead><tbody>
+    <tr><td><strong>세션 α</strong></td><td>약 7분</td><td>1회</td><td>1회</td><td>7 / 10</td><td><a href="https://github.com/H0P2/frame-lab-card-studio/tree/3d4032fefd88b901605f248bdb8f98e09e1e49d2">3d4032f…</a></td><td><a href="https://github.com/H0P2/frame-lab-card-studio/tree/1f9d533371b462225e65bf103fc7090a6a30f735">1f9d533…</a></td></tr>
+    <tr><td><strong>세션 β</strong></td><td>약 4분</td><td>3회</td><td>0회</td><td>10 / 10</td><td><a href="https://github.com/H0P2/frame-lab-card-studio/tree/95010c10d24d3fffc59eecfca610ce1ad3d7e38a">95010c1…</a></td><td><a href="https://github.com/H0P2/frame-lab-card-studio/tree/cd5c80d59f74904a5eab039bdadf4c2cc1c557d3">cd5c80d…</a></td></tr>
+  </tbody></table></div>
+  <p class="muted">세션 β는 AI가 코드를 제안하고, 운영자가 실제 저장소에 반영·검토·브라우저 실행을 했다. AI가 로컬 검사를 직접 실행한 것으로 기록하지 않았다. 재작업량은 제출 후 고정 소스 버전 쌍으로 채점된다.</p>
+</section>
+<section>
+  <h2>순서와 인수인계</h2>
+  <ol class="timeline">
+    <li><b>11:13 · 같은 문제와 검사 고정</b><a href="fixed-contract.md">I01–I10 계약</a>과 시간·요청 상한을 구현 전에 정했다.</li>
+    <li><b>11:13–11:19 · 세션 α 시작→중단</b>JSON 검증·미리보기·취소를 구현했다. 실제 브라우저 검사에서 7/10 통과, 적용 관련 3건 실패를 확인했다. <a href="a-results.json">검사 원본</a></li>
+    <li><b>11:27 · 7칸 인수인계 공개</b><a href="handoff.md">목표·현재 상태·실행 명령·통과 검사·남은 문제·다음 행동·금지 변경</a>을 저장소에 고정했다.</li>
+    <li><b>11:29–11:32 · 세션 β 시작→완료</b>새 AI 세션에는 공개 저장소와 인수인계 문서만 주었다. 실제 소스와 맞지 않은 초기 제안은 수정 요청으로 고쳤다. 적용 전 재검증과 단일 쓰기 트랜잭션을 반영해 같은 검사 10/10을 통과했다. <a href="b-results.json">검사 원본</a></li>
+  </ol>
+</section>
+<section>
+  <h2>짧은 확인 방법 · 4줄</h2>
+  <div class="decision"><b>① 위치</b><span><a href="../index.html">Frame Lab 공개 편집기</a>의 ‘내 템플릿 → 옮겨 쓰기’로 이동한다.</span></div>
+  <div class="decision"><b>② 행동</b><span><a href="fixtures/new-one.json" download>검사용 JSON</a>을 저장해 가져온 뒤 미리보기의 개수를 확인하고 ‘적용’을 누른다. 취소 동작도 같은 파일로 확인할 수 있다.</span></div>
+  <div class="decision"><b>③ 통과 모습</b><span>적용 전 ‘신규 1 · 갱신 0’이 보이고 목록은 그대로다. 적용 뒤 새 템플릿 1개와 완료 문구가 보인다.</span></div>
+  <div class="decision"><b>④ 안 될 때</b><span>손상된 JSON이나 24개 한도 초과는 오류를 표시하고 기존 목록을 유지한다. 저장소 연결이 없으면 적용 버튼을 사용할 수 없다.</span></div>
+</section>
+<section>
+  <h2>AI와 내 판단 · 3줄</h2>
+  <div class="decision"><b>AI에게 맡긴 일</b><span>첫 세션에 전체 검증·미리보기·취소를, 새 세션에 저장 직전 재검증과 원자적 적용 코드를 맡겼다.</span></div>
+  <div class="decision"><b>직접 판단한 일</b><span>같은 10개 검사를 먼저 고정하고, 실제 브라우저 결과와 저장소 코드를 기준으로 인수인계 및 완료 여부를 판정했다.</span></div>
+  <div class="decision"><b>따르지 않은 일</b><span>새 세션의 초기 일반 예시는 존재하지 않는 함수와 다른 DB 이름을 사용해 적용하지 않았다. 두 번째 안의 오래된 목록 기준 32MB 검사도 채택하지 않고, 현재 DB 기준으로 고쳤다.</span></div>
+  <h3>다음 작업의 도구 선택 기준</h3>
+  <p class="note">소스 수정과 실제 검사가 필요하면 저장소를 직접 다룰 수 있는 도구를 먼저 쓰고, 대화 단절을 시험할 때는 다른 서비스에 고정 소스와 인수인계만 전달하며, 독립 검토 결과는 비교 판정과 분리한다.</p>
+</section>
+<section>
+  <h2>비교 후 독립 검토</h2>
+  <p>무료 Claude를 세 번째 검토자로 사용했다. Claude는 코드를 읽고 미리보기 이후 DB 변경, 영상 저장 중 적용, 적용 버튼 중복 클릭을 지적했다. 운영자가 이를 수정하고 브라우저에서 <b>고정 검사 10/10</b>, 별도 동시성 검사 <b>3/3</b>, 기존 기능 재검사 <b>52/52</b>를 확인했다. Claude가 검사를 직접 실행한 것은 아니다.</p>
+  <p class="muted">기존 기능 재검사 도구의 첫 실행은 이전 ‘파일 선택 즉시 저장’ 절차를 기대해 실패했다. 새 ‘미리보기→적용’ 동작에 맞게 검사 행동만 바꾸고 기대값은 유지한 뒤 52개를 모두 통과했다. 이 후속 검토와 수정은 위 세션 α/β의 비교 수치에 포함하지 않았다.</p>
+  <div class="links"><a href="review-results.json">추가 검사 요약</a><a href="review-checks.html">추가 검사 도구</a><a href="regression-all.json">기존 기능 52개 원본</a></div>
+</section>
+<section>
+  <h2>자료</h2>
+  <div class="links"><a href="handoff.md">7칸 인수인계</a><a href="fixed-contract.md">고정 검사 계약</a><a href="run-log.md">전체 작업 기록</a><a href="a-results.json">A 검사 결과</a><a href="b-results.json">B 검사 결과</a><a href="https://github.com/H0P2/frame-lab-card-studio/tree/cd5c80d59f74904a5eab039bdadf4c2cc1c557d3">B 완료 고정 소스</a></div>
+  <p class="muted">공개 화면과 저장소에는 검사에 필요한 합성 데이터만 사용했다.</p>
+</section>
+<footer>2026-10-08 · T05 공개 보고서 · 검사 결과는 기록된 브라우저 실행 시점에 한정됩니다.</footer>
+</main>
+</html>

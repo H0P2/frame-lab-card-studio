@@ -42,7 +42,8 @@ async function openDB(name=DBNAME,stores=['templates']){
 function syncStorageControls(){
   $('createTemplate').disabled=!db||recording;$('updateTemplate').disabled=!db||!selected||recording;
   $('jsonFile').disabled=!db||recording;$('exportJSON').disabled=!db||recording;
-  $('applyImport').disabled=!db||!pendingImport||recording;
+  $('applyImport').disabled=!db||!pendingImport||recording||applyingImport;
+  $('cancelImport').disabled=applyingImport;
   $('undoDelete').disabled=!db||recording;$('retryStorage').hidden=!!db&&!!draftDB;
   $('retryStorage').disabled=!!storageConnectTask;
 }
@@ -82,7 +83,7 @@ async function updateTemplate(id,name){const t=templates.find(x=>x.id===id);if(!
 async function deleteTemplate(id){const t=templates.find(x=>x.id===id);if(!t)throw Error('삭제할 템플릿을 찾을 수 없습니다.');await dbWrite([{...t,deleted:true,deletedAt:new Date().toISOString()}]);await refreshTemplates();notify(`“${t.name}” 템플릿을 삭제했습니다. 삭제 취소로 복구할 수 있습니다.`);return {id,deleted:true}}
 async function undoDelete(){const all=await dbRead(),t=all.find(x=>x.id===$('undoDelete').dataset.id);if(!t)throw Error('복구할 템플릿이 없습니다.');if(templates.length>=MAX_TEMPLATES)throw Error('템플릿 수가 24개입니다. 항목을 줄인 뒤 복구하세요.');ensureTemplateBudget([{...t,deleted:false}]);await dbWrite([{...t,deleted:false}]);await refreshTemplates();notify('삭제한 템플릿을 복구했습니다.')}
 function exportJSON(){return JSON.stringify({format:'frame-lab-templates',version:1,templates:templates.map(t=>({id:t.id,name:t.name,createdAt:t.createdAt,updatedAt:t.updatedAt,editor:t.editor}))},null,2)}
-let pendingImport=null;
+let pendingImport=null,applyingImport=false;
 function cancelImportJSON(){pendingImport=null;$('importPreview').hidden=true;$('importCounts').textContent='';$('applyImport').disabled=true}
 async function previewImportJSON(raw){
   cancelImportJSON();
@@ -111,9 +112,12 @@ async function previewImportJSON(raw){
 }
 async function importJSON(raw){return previewImportJSON(raw)}
 async function applyImportJSON(){
-  if(!pendingImport)throw Error('적용할 템플릿이 없습니다.');
+  if(!pendingImport||applyingImport)return null;
+  if(recording)throw Error('영상 저장 중에는 템플릿을 적용할 수 없습니다.');
   if(!db)throw Error('이 브라우저에서 템플릿을 저장할 수 없습니다.');
   const candidate=pendingImport,connection=db;
+  applyingImport=true;syncStorageControls();
+  try{
   const counts=await new Promise((resolve,reject)=>{
     let tx,failed=false,counts;
     const fail=error=>{if(failed)return;failed=true;try{tx?.abort()}catch{}reject(error instanceof Error?error:Error('템플릿을 저장하지 못했습니다. 기존 목록은 유지됩니다.'))};
@@ -130,6 +134,7 @@ async function applyImportJSON(){
           if(new Blob([JSON.stringify(data,null,2)]).size>MAX_JSON)throw Error('템플릿 전체 이미지와 설정은 32MB까지 보관합니다. 기존 목록은 유지됩니다.');
           counts={newCount:candidate.records.filter(t=>!currentIds.has(t.id)).length};
           counts.updatedCount=candidate.records.length-counts.newCount;
+          if(counts.newCount!==candidate.newCount||counts.updatedCount!==candidate.updatedCount)throw Error('저장소 목록이 바뀌었습니다. JSON을 다시 선택해 확인하세요.');
           for(const item of candidate.records)store.put(item);
         }catch(error){fail(error)}
       };
@@ -140,9 +145,14 @@ async function applyImportJSON(){
     }catch(error){fail(error)}
   });
   if(pendingImport===candidate)cancelImportJSON();
-  await refreshTemplates();
+  if(db!==connection){notify('템플릿은 저장됐지만 목록 연결이 끊겼습니다. 저장소 다시 연결로 확인하세요.',true);return counts}
+  try{await refreshTemplates()}catch{notify('템플릿은 저장됐지만 목록을 새로고침하지 못했습니다. 저장소 다시 연결로 확인하세요.',true);return counts}
   notify(`신규 ${counts.newCount} · 갱신 ${counts.updatedCount} 적용 완료`);
   return counts;
+  }catch(error){
+    if(/24개를 넘|목록이 바뀌었습니다/.test(error.message))cancelImportJSON();
+    throw error;
+  }finally{applyingImport=false;syncStorageControls()}
 }
 function run(action){const execute=async()=>{busy=true;try{return await action()}catch(e){notify(e.message||'작업을 완료하지 못했습니다. 기존 작업은 유지됩니다.',true)}finally{busy=false}};const operation=actionQueue.then(execute,execute);actionQueue=operation.catch(()=>{});return operation}
 // Studio state is separate from the current card and stored templates.
@@ -228,7 +238,7 @@ async function exportVideo(){
   if(recording)throw Error('영상을 이미 만들고 있습니다.');
   await document.fonts.ready;stopMotion();const card={...state},source=image,c=document.createElement('canvas');draw(card,source,c,{progress:0});
   const stream=c.captureStream(30),recorder=new MediaRecorder(stream,{mimeType:videoMime(),videoBitsPerSecond:6000000}),chunks=[];let frameId=0,abortReason=null;
-  recording=true;syncStudio();updateSelection();document.querySelectorAll('.controls input,.controls select,.controls textarea,[data-ratio],[data-preset],[data-effect],#sample,#removeImage,#resetStyle,#createTemplate,#updateTemplate,#exportJSON,#jsonFile').forEach(el=>el.disabled=true);
+  recording=true;syncStudio();updateSelection();syncStorageControls();document.querySelectorAll('.controls input,.controls select,.controls textarea,[data-ratio],[data-preset],[data-effect],#sample,#removeImage,#resetStyle,#createTemplate,#updateTemplate,#exportJSON,#jsonFile').forEach(el=>el.disabled=true);
   const visibility=()=>{if(document.hidden){abortReason=Error('다른 화면으로 이동해 영상 생성을 중단했습니다. 다시 시도해 주세요.');if(recorder.state!=='inactive')recorder.stop()}};
   document.addEventListener('visibilitychange',visibility);
   try{return await new Promise((resolve,reject)=>{

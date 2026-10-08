@@ -1,7 +1,10 @@
 {
   "phase": "AI A stop",
+  "started_at_kst": "2026-10-08 11:13:00",
+  "ended_at_kst": "2026-10-08 11:19:45",
   "measured_at_kst": "2026-10-08 11:19:45",
   "source_baseline": "3d4032fefd88b901605f248bdb8f98e09e1e49d2",
+  "source_end": "1f9d533371b462225e65bf103fc7090a6a30f735",
   "contract": "t05/fixed-contract.md",
   "url": "http://127.0.0.1:8883/t05/checks.html",
   "run_count": 1,
