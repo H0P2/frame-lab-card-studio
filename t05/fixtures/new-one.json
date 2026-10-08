@@ -1,0 +1,28 @@
+{
+  "format": "frame-lab-templates",
+  "version": 1,
+  "templates": [
+    {
+      "id": "incoming-0001",
+      "name": "합성 테스트 카드",
+      "createdAt": "2026-10-08T00:00:00.000Z",
+      "updatedAt": "2026-10-08T00:00:00.000Z",
+      "editor": {
+        "ratio": "1:1",
+        "text": "검사 문구",
+        "fontSize": 76,
+        "color": "#ffffff",
+        "position": "bottom",
+        "align": "left",
+        "fit": "cover",
+        "background": "#171922",
+        "scrim": true,
+        "image": null,
+        "offsetX": 0,
+        "offsetY": 0,
+        "style": "original",
+        "effect": "none"
+      }
+    }
+  ]
+}
